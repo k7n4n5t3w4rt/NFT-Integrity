@@ -127,8 +127,7 @@ The contract uses two Solidity dependencies (**OpenZeppelin** and **forge-std**)
 ├── scripts/
 │   └── create-manifest.js           # CLI tool to generate manifests
 ├── lib/                             # Dependencies (forge-std, OpenZeppelin)
-├── foundry.toml
-└── remappings.txt
+└── foundry.toml
 ```
 
 ## Quick start

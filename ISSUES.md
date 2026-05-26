@@ -24,14 +24,13 @@
 ## Issue 2 — README references deleted remappings.txt
 
 - **ID:** 012
-- **STATUS:** open
+- **STATUS:** in-progress
 - **BRANCH:** `fix/012-readme-remove-remappings-txt-ref`
 - **Severity:** Docs
 - **File:** `README.md`
 - **Problem:** `remappings.txt` was deleted in issue 004 to avoid dual sources of truth (remappings live in `foundry.toml`), but the project structure diagram in the README still lists it:
 ```
-├── foundry.toml
-└── remappings.txt
+└── foundry.toml
 ```
 A user who reads the diagram will look for a file that doesn't exist.
 - **Fix:** Remove the `└── remappings.txt` line from the project structure diagram.
@@ -41,7 +40,7 @@ A user who reads the diagram will look for a file that doesn't exist.
 ## Issue 3 — No package.json for Node.js dependency management
 
 - **ID:** 013
-- **STATUS:** open
+- **STATUS:** in-progress
 - **BRANCH:** `fix/013-add-package-json`
 - **Severity:** DX (Developer Experience)
 - **Files:** (new) `package.json`
@@ -79,7 +78,7 @@ A user who reads the diagram will look for a file that doesn't exist.
 ## Issue 5 — Custom role system silently overwrites existing holders
 
 - **ID:** 015
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/015-document-single-holder-roles`
 - **Severity:** Docs
 - **File:** `README.md`
