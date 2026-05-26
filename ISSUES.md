@@ -25,7 +25,7 @@
 ## Issue 2 — Invalid JSON: trailing comma in example manifest
 
 - **ID:** 002
-- **STATUS:** in-progress
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/002-example-manifest-trailing-comma`
 - **Severity:** Critical
 - **File:** `schemas/example-manifest.json`
