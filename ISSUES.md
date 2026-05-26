@@ -12,7 +12,7 @@
 ## Issue 1 — README test count off by one (34 → 35)
 
 - **ID:** 011
-- **STATUS:** ready-to-merge
+- **STATUS:** merged
 - **BRANCH:** `fix/011-readme-test-count-35`
 - **Severity:** Docs
 - **File:** `README.md`
@@ -24,7 +24,7 @@
 ## Issue 2 — README references deleted remappings.txt
 
 - **ID:** 012
-- **STATUS:** open
+- **STATUS:** merged
 - **BRANCH:** `fix/012-readme-remove-remappings-txt-ref`
 - **Severity:** Docs
 - **File:** `README.md`
@@ -41,7 +41,7 @@ A user who reads the diagram will look for a file that doesn't exist.
 ## Issue 3 — No package.json for Node.js dependency management
 
 - **ID:** 013
-- **STATUS:** open
+- **STATUS:** merged
 - **BRANCH:** `fix/013-add-package-json`
 - **Severity:** DX (Developer Experience)
 - **Files:** (new) `package.json`
@@ -57,7 +57,7 @@ A user who reads the diagram will look for a file that doesn't exist.
 ## Issue 4 — Mint helper script missing: Quick Start step 7 is too complex
 
 - **ID:** 014
-- **STATUS:** ready-to-merge
+- **STATUS:** merged
 - **BRANCH:** `fix/014-add-mint-helper-script`
 - **Severity:** Docs / DX
 - **Files:** (new) `scripts/mint.js`, `README.md`
@@ -79,7 +79,7 @@ A user who reads the diagram will look for a file that doesn't exist.
 ## Issue 5 — Custom role system silently overwrites existing holders
 
 - **ID:** 015
-- **STATUS:** ready-to-merge
+- **STATUS:** merged
 - **BRANCH:** `fix/015-document-single-holder-roles`
 - **Severity:** Docs
 - **File:** `README.md`
