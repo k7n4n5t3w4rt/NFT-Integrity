@@ -3,7 +3,7 @@
 <!--
   STATUS values: open | in-progress | ready-to-merge | merged
   BRANCH naming: fix/###-short-slug
-  Agents: grep for "STATUS: open" to find the next unclaimed issue.
+  Agents: grep for "STATUS: ready-to-merge" to find the next unclaimed issue.
           Set STATUS to "in-progress", do the work on the listed branch,
           commit, push, then set STATUS to "ready-to-merge" and push again.
 -->
@@ -25,7 +25,7 @@
 ## Issue 2 — Invalid JSON: trailing comma in example manifest
 
 - **ID:** 002
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/002-example-manifest-trailing-comma`
 - **Severity:** Critical
 - **File:** `schemas/example-manifest.json`
@@ -37,7 +37,7 @@
 ## Issue 3 — README: manifestContentHash labels keccak256 but code computes sha256
 
 - **ID:** 003
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/003-readme-hash-docs`
 - **Severity:** Bug
 - **File:** `README.md`
