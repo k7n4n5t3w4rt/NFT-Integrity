@@ -1,0 +1,15 @@
+{
+  "name": "nft-integrity-contract",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NFT Integrity Contract — on-chain anchoring of IPFS integrity manifests",
+  "scripts": {
+    "create-manifest": "node scripts/create-manifest.js",
+    "cid-to-hex": "node -e \"const {CID}=require('multiformats/cid');const cid=CID.parse(process.argv[1]);console.log('0x'+Buffer.from(cid.bytes).toString('hex'))\"",
+    "manifest-content-hash": "node -e \"const keccak256=require('js-sha3').keccak256;const fs=require('fs');const buf=fs.readFileSync(process.argv[1]);console.log('0x'+keccak256(buf))\""
+  },
+  "devDependencies": {
+    "js-sha3": "^0.9.3",
+    "multiformats": "^13.1.0"
+  }
+}

@@ -57,7 +57,7 @@ A user who reads the diagram will look for a file that doesn't exist.
 ## Issue 4 — Mint helper script missing: Quick Start step 7 is too complex
 
 - **ID:** 014
-- **STATUS:** open
+- **STATUS:** in-progress
 - **BRANCH:** `fix/014-add-mint-helper-script`
 - **Severity:** Docs / DX
 - **Files:** (new) `scripts/mint.js`, `README.md`
@@ -79,7 +79,7 @@ A user who reads the diagram will look for a file that doesn't exist.
 ## Issue 5 — Custom role system silently overwrites existing holders
 
 - **ID:** 015
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/015-document-single-holder-roles`
 - **Severity:** Docs
 - **File:** `README.md`
