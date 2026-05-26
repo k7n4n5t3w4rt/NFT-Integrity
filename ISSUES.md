@@ -37,7 +37,7 @@
 ## Issue 3 — README: manifestContentHash labels keccak256 but code computes sha256
 
 - **ID:** 003
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/003-readme-hash-docs`
 - **Severity:** Bug
 - **File:** `README.md`
