@@ -4,7 +4,7 @@
   "title": "NFT Integrity Manifest",
   "description": "CID-centric manifest for ERC-721 tokens. The CID is the canonical artefact identity. Import settings are the recipe for reproducing that CID. Gateways are mutable retrieval routes.",
   "type": "object",
-  "required": ["schema", "token", "work", "canonicalMedia", "ipfsImport", "retrieval", "rights", "governance"],
+  "required": ["schema", "token", "work", "canonicalMedia", "ipfsImport", "retrieval", "rights"],
   "properties": {
     "schema": {
       "type": "string",
@@ -219,112 +219,6 @@
         }
       }
     },
-    "governance": {
-      "type": "object",
-      "required": [
-        "gatewayUpdates",
-        "mirrorUpdates",
-        "canonicalMediaUpdates",
-        "derivativeApprovals"
-      ],
-      "properties": {
-        "gatewayUpdates": {
-          "type": "object",
-          "required": ["allowedBy", "rule"],
-          "properties": {
-            "allowedBy": {
-              "type": "string",
-              "description": "Who can update gateways."
-            },
-            "rule": {
-              "type": "string",
-              "description": "Rule governing gateway updates."
-            }
-          }
-        },
-        "mirrorUpdates": {
-          "type": "object",
-          "required": ["allowedBy", "rule"],
-          "properties": {
-            "allowedBy": {
-              "type": "string",
-              "description": "Who can update mirrors."
-            },
-            "rule": {
-              "type": "string",
-              "description": "Rule governing mirror updates."
-            }
-          }
-        },
-        "canonicalMediaUpdates": {
-          "type": "object",
-          "required": ["allowedBy", "rule"],
-          "properties": {
-            "allowedBy": {
-              "type": "string",
-              "description": "Who can update the canonical media CID."
-            },
-            "rule": {
-              "type": "string",
-              "description": "Rule governing canonical media updates."
-            }
-          }
-        },
-        "derivativeApprovals": {
-          "type": "object",
-          "required": ["allowedBy", "rule"],
-          "properties": {
-            "allowedBy": {
-              "type": "string",
-              "description": "Who can approve derivatives."
-            },
-            "rule": {
-              "type": "string",
-              "description": "Rule governing derivative approvals."
-            }
-          }
-        }
-      }
-    },
-    "authorisedDerivatives": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["role", "uri", "cid", "derivedFromCID", "authorisedBy", "dateAuthorised"],
-        "properties": {
-          "role": {
-            "type": "string",
-            "description": "Role of this derivative."
-          },
-          "uri": {
-            "type": "string",
-            "format": "uri",
-            "description": "IPFS URI of the derivative."
-          },
-          "cid": {
-            "type": "string",
-            "description": "CID of the derivative."
-          },
-          "derivedFromCID": {
-            "type": "string",
-            "description": "The canonical CID this derives from."
-          },
-          "reason": {
-            "type": "string",
-            "description": "Why this derivative was authorised."
-          },
-          "authorisedBy": {
-            "type": "string",
-            "description": "Who authorised this derivative."
-          },
-          "dateAuthorised": {
-            "type": "string",
-            "format": "date",
-            "description": "Date of authorisation (ISO 8601)."
-          }
-        }
-      },
-      "description": "Explicitly authorised derivatives of the canonical artefact."
-    }
+
   }
 }

@@ -55,33 +55,4 @@
     "licenceCID": "bafybeihrnrr2f3q3e2lsmxtsquj5cs4g7pjxkqq36sulbd5dawg62g5vqa",
     "summary": "Token ownership does not imply copyright transfer except as specified in the licence."
   },
-  "governance": {
-    "gatewayUpdates": {
-      "allowedBy": "token-holder",
-      "rule": "Gateways may be updated without changing canonical media identity."
-    },
-    "mirrorUpdates": {
-      "allowedBy": "DAO-or-multisig",
-      "rule": "New mirrors must reproduce the canonical CID using the specified IPFS import settings."
-    },
-    "canonicalMediaUpdates": {
-      "allowedBy": "not-allowed",
-      "rule": "The canonical media CID is immutable."
-    },
-    "derivativeApprovals": {
-      "allowedBy": "DAO-or-artist-multisig",
-      "rule": "Any file producing a different CID must be recorded as an authorised derivative, not substituted for the canonical artefact."
-    }
-  },
-  "authorisedDerivatives": [
-    {
-      "role": "exhibition-copy",
-      "uri": "ipfs://bafybeicuf4swj3mta7qjh7tg4hf4u6svrmnnhvjjsppmy2iaqlqei2sdfy",
-      "cid": "bafybeicuf4swj3mta7qjh7tg4hf4u6svrmnnhvjjsppmy2iaqlqei2sdfy",
-      "derivedFromCID": "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
-      "reason": "Display-optimised exhibition version",
-      "authorisedBy": "DAO-or-artist-multisig",
-      "dateAuthorised": "2026-05-26"
-    }
-  ]
 }

@@ -26,14 +26,24 @@ interface IIntegrityNFT is IERC721 {
 
     // ─── Structs ─────────────────────────────────────────────────────────
 
-    /// @param cid              Full IPFS CID bytes (multibase-prefixed).
-    /// @param cidString        Readable CID string (e.g. "bafybei...").
-    /// @param manifestURI      URI pointing to the integrity manifest JSON.
-    /// @param ipfsImportKey    Reference to the IPFS import settings used (manifest key).
+    /// @param canonicalCID          Full IPFS CID bytes of the canonical artefact (multibase-prefixed).
+    /// @param canonicalCIDString    Readable CID string of the canonical artefact (e.g. "bafybei...").
+    /// @param manifestCIDString     CID of the integrity manifest JSON (separate file, distinct CID).
+    /// @param manifestURI           URI pointing to the integrity manifest (e.g. "ipfs://<manifestCID>").
+    /// @param mimeType              MIME type of the canonical artefact (e.g. "image/png", "video/mp4").
+    /// @param licenceCID            CID of the licence document (e.g. "bafy..."). Anchors rights on-chain.
+    /// @param manifestContentHash   keccak256 hash of the manifest content. Anchors the
+    ///                              specific manifest version on-chain so consumers can detect
+    ///                              if the manifest at the URI has been swapped.
+    /// @param ipfsImportKey         Reference to the IPFS import settings used (manifest key).
     struct TokenIntegrity {
-        bytes   cid;
-        string  cidString;
+        bytes   canonicalCID;
+        string  canonicalCIDString;
+        string  manifestCIDString;
         string  manifestURI;
+        string  mimeType;
+        string  licenceCID;
+        bytes32 manifestContentHash;
         string  ipfsImportKey;
     }
 
@@ -70,15 +80,21 @@ interface IIntegrityNFT is IERC721 {
 
     event TokenIntegritySet(
         uint256 indexed tokenId,
-        bytes   cid,
-        string  cidString,
-        string  manifestURI
+        bytes   canonicalCID,
+        string  canonicalCIDString,
+        string  manifestCIDString,
+        string  manifestURI,
+        string  mimeType,
+        string  licenceCID,
+        bytes32 manifestContentHash
     );
 
     event ManifestURIUpdated(
         uint256 indexed tokenId,
         string  oldURI,
-        string  newURI
+        string  newURI,
+        string  newManifestCIDString,
+        bytes32 newManifestContentHash
     );
 
     event DerivativeAuthorised(
@@ -111,13 +127,23 @@ interface IIntegrityNFT is IERC721 {
 
     // ─── Token Integrity ─────────────────────────────────────────────────
 
-    /// @notice Mint a new token with its canonical CID and manifest URI.
+    /// @notice Mint a new token with its canonical CID, manifest CID, manifest URI, and MIME type.
     /// @dev Canonical CID is immutable once set. Only MINTER_ROLE.
+    /// @param manifestCIDString  The CID of the manifest file itself (distinct from canonicalCID).
+    /// @param manifestURI        Full URI pointing to the manifest (e.g. "ipfs://<manifestCID>").
+    /// @param mimeType              MIME type of the canonical artefact (e.g. "image/png", "video/mp4").
+    /// @param licenceCID            CID of the licence document. Anchors rights on-chain.
+    /// @param manifestContentHash   keccak256 hash of the manifest content. Anchors the
+    ///                              specific manifest version on-chain.
     function mint(
         address to,
         bytes   calldata canonicalCID,
-        string  calldata cidString,
-        string  calldata manifestURI
+        string  calldata canonicalCIDString,
+        string  calldata manifestCIDString,
+        string  calldata manifestURI,
+        string  calldata mimeType,
+        string  calldata licenceCID,
+        bytes32 manifestContentHash
     ) external returns (uint256 tokenId);
 
     /// @notice Get the integrity record for a token.
@@ -134,12 +160,20 @@ interface IIntegrityNFT is IERC721 {
 
     // ─── Manifest Management ─────────────────────────────────────────────
 
-    /// @notice Update the manifest URI for a token.
+    /// @notice Update the manifest URI and manifest CID for a token.
+    /// @param newManifestCIDString  The CID of the manifest file itself (distinct from canonicalCID).
+    /// @param newURI                Full URI pointing to the manifest (e.g. "ipfs://<manifestCID>").
+    /// @param newManifestContentHash keccak256 hash of the new manifest content. Anchors the
+    ///                               specific manifest version on-chain.
     /// @dev Only MANIFEST_UPDATER_ROLE. The canonical CID does NOT change.
     /// The CID embedded in `newURI` (everything after `ipfs://`) must match
-    /// the token's canonical CID — this is enforced on-chain.
-    function updateManifestURI(uint256 tokenId, string calldata newURI)
-        external;
+    /// `newManifestCIDString` — this is enforced on-chain.
+    function updateManifestURI(
+        uint256 tokenId,
+        string  calldata newManifestCIDString,
+        string  calldata newURI,
+        bytes32 newManifestContentHash
+    ) external;
 
     // ─── Derivatives ─────────────────────────────────────────────────────
 

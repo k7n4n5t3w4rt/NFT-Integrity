@@ -65,25 +65,6 @@ const DEFAULTS = {
       "Token ownership does not imply copyright transfer except as specified in the licence.",
   },
 
-  governance: {
-    gatewayUpdates: {
-      allowedBy: "DEFAULT_ADMIN_ROLE",
-      rule: "Gateways may be updated without changing canonical media identity.",
-    },
-    mirrorUpdates: {
-      allowedBy: "DEFAULT_ADMIN_ROLE",
-      rule: "New mirrors must reproduce the canonical CID using the specified IPFS import settings.",
-    },
-    canonicalMediaUpdates: {
-      allowedBy: "not-allowed",
-      rule: "The canonical media CID is immutable.",
-    },
-    derivativeApprovals: {
-      allowedBy: "DERIVATIVE_MANAGER_ROLE",
-      rule: "Any file producing a different CID must be recorded as an authorised derivative, not substituted for the canonical artefact.",
-    },
-  },
-
   canonicalMedia: {
     role: "canonical",
     uri: null,
@@ -94,6 +75,7 @@ const DEFAULTS = {
   },
 
   authorisedDerivatives: [],
+
 };
 
 // ─── Argument parsing (simple argv walker) ───────────────────────────────
@@ -159,8 +141,8 @@ Optional overrides (dot-separated path):
   --ipfsImport.implementationVersion STR
   --retrieval.preferredGateway    URI
   --retrieval.fallbackGateways    JSON array string
-  --governance.canonicalMediaUpdates.allowedBy STR
-  --derivatives JSON              JSON array of derivative objects
+
+
   --output     PATH               Output file (default: stdout)
 
 Example:
@@ -254,15 +236,7 @@ Example:
     }
   }
 
-  // Derivatives from JSON string
-  if (args.derivatives) {
-    try {
-      manifest.authorisedDerivatives = JSON.parse(args.derivatives);
-    } catch {
-      console.error("Error: --derivatives must be valid JSON array.");
-      process.exit(1);
-    }
-  }
+
 
   // Fallback gateways from JSON string
   if (args["retrieval.fallbackGateways"]) {

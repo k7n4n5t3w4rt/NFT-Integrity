@@ -15,11 +15,12 @@ import "./interfaces/IIntegrityNFT.sol";
 ///   reproducing that identity from the original bytes. The gateway is
 ///   only a route.
 ///
-/// Governance model (see manifest "governance" section):
+/// Governance model (on-chain, single source of truth):
 ///   • Canonical CID:  immutable once minted
 ///   • Manifest URI:   updatable by MANIFEST_UPDATER_ROLE
 ///   • Derivatives:    authorised/revoked by DERIVATIVE_MANAGER_ROLE
-///   • Gateways:       updatable by owner
+///   • Gateways:       updatable by owner (DEFAULT_ADMIN_ROLE)
+///   • Roles:          grant/revoke by DEFAULT_ADMIN_ROLE
 contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
 
     // ─── Role definitions (as bytes32 constants for interface compliance) ─
@@ -39,6 +40,8 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
 
     // ─── Token integrity storage ─────────────────────────────────────────
 
+    // Struct field cid renamed to canonicalCID for clarity:
+    // it is the canonical artefact CID, not any CID.
     mapping(uint256 => TokenIntegrity) private _tokenIntegrity;
 
     // ─── Derivatives storage ─────────────────────────────────────────────
@@ -142,23 +145,50 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
     function mint(
         address to,
         bytes   calldata canonicalCID,
-        string  calldata cidString,
-        string  calldata manifestURI
+        string  calldata canonicalCIDString,
+        string  calldata manifestCIDString,
+        string  calldata manifestURI,
+        string  calldata mimeType,
+        string  calldata licenceCID,
+        bytes32 manifestContentHash
     )
         external
         onlyRole(MINTER_ROLE)
         returns (uint256 tokenId)
     {
         require(canonicalCID.length > 0, "NFTIntegrity: empty CID");
-        require(bytes(cidString).length > 0, "NFTIntegrity: empty CID string");
+        require(bytes(canonicalCIDString).length > 0, "NFTIntegrity: empty CID string");
+        require(bytes(manifestCIDString).length > 0, "NFTIntegrity: empty manifest CID string");
+        require(bytes(mimeType).length > 0, "NFTIntegrity: empty mime type");
+        require(bytes(licenceCID).length > 0, "NFTIntegrity: empty licence CID");
+        require(manifestContentHash != bytes32(0), "NFTIntegrity: empty manifest content hash");
+
+        // Validate that manifestURI matches the manifest CID.
+        bytes memory uriBytes    = bytes(manifestURI);
+        bytes memory mcidBytes   = bytes(manifestCIDString);
+        bytes memory prefix      = bytes("ipfs://");
+        require(
+            uriBytes.length == prefix.length + mcidBytes.length,
+            "NFTIntegrity: manifest URI length mismatch"
+        );
+        for (uint i = 0; i < prefix.length; i++) {
+            require(uriBytes[i] == prefix[i], "NFTIntegrity: URI must start with ipfs://");
+        }
+        for (uint i = 0; i < mcidBytes.length; i++) {
+            require(uriBytes[i + prefix.length] == mcidBytes[i], "NFTIntegrity: manifest URI must match manifest CID");
+        }
 
         tokenId = _nextTokenId++;
 
         _tokenIntegrity[tokenId] = TokenIntegrity({
-            cid:           canonicalCID,
-            cidString:     cidString,
-            manifestURI:   manifestURI,
-            ipfsImportKey: "ipfsImport"
+            canonicalCID:       canonicalCID,
+            canonicalCIDString: canonicalCIDString,
+            manifestCIDString:  manifestCIDString,
+            manifestURI:        manifestURI,
+            mimeType:           mimeType,
+            licenceCID:         licenceCID,
+            manifestContentHash: manifestContentHash,
+            ipfsImportKey:      "ipfsImport"
         });
 
         _safeMint(to, tokenId);
@@ -168,7 +198,7 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
             _setTokenURI(tokenId, manifestURI);
         }
 
-        emit TokenIntegritySet(tokenId, canonicalCID, cidString, manifestURI);
+        emit TokenIntegritySet(tokenId, canonicalCID, canonicalCIDString, manifestCIDString, manifestURI, mimeType, licenceCID, manifestContentHash);
     }
 
     // ─── Token Integrity ─────────────────────────────────────────────────
@@ -192,29 +222,34 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
         _requireMinted(tokenId);
         // Compare via hash — Solidity does not support == across bytes storage
         // and bytes calldata. CIDs are small, so gas difference is negligible.
-        return keccak256(abi.encodePacked(_tokenIntegrity[tokenId].cid))
+        return keccak256(abi.encodePacked(_tokenIntegrity[tokenId].canonicalCID))
             == keccak256(abi.encodePacked(cid));
     }
 
     // ─── Manifest Management ─────────────────────────────────────────────
 
     /// @inheritdoc IIntegrityNFT
-    function updateManifestURI(uint256 tokenId, string calldata newURI)
+    function updateManifestURI(
+        uint256 tokenId,
+        string  calldata newManifestCIDString,
+        string  calldata newURI,
+        bytes32 newManifestContentHash
+    )
         external
         onlyRole(MANIFEST_UPDATER_ROLE)
     {
         _requireMinted(tokenId);
 
+        require(newManifestContentHash != bytes32(0), "NFTIntegrity: empty manifest content hash");
+
         // Enforce that the CID embedded in newURI (the part after "ipfs://")
-        // matches the token's canonical CID. This is the on-chain guarantee
-        // that the manifest URI always points to the same content as the
-        // canonical CID.
+        // matches the supplied manifest CID string.
         bytes memory newURIBytes = bytes(newURI);
-        bytes memory cidString  = bytes(_tokenIntegrity[tokenId].cidString);
-        bytes memory prefix     = bytes("ipfs://");
+        bytes memory newMancid   = bytes(newManifestCIDString);
+        bytes memory prefix      = bytes("ipfs://");
 
         require(
-            newURIBytes.length == prefix.length + cidString.length,
+            newURIBytes.length == prefix.length + newMancid.length,
             "NFTIntegrity: manifest URI length mismatch"
         );
         for (uint i = 0; i < prefix.length; i++) {
@@ -223,20 +258,22 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
                 "NFTIntegrity: URI must start with ipfs://"
             );
         }
-        for (uint i = 0; i < cidString.length; i++) {
+        for (uint i = 0; i < newMancid.length; i++) {
             require(
-                newURIBytes[i + prefix.length] == cidString[i],
-                "NFTIntegrity: manifest CID must match canonical CID"
+                newURIBytes[i + prefix.length] == newMancid[i],
+                "NFTIntegrity: manifest CID must match supplied manifest CID"
             );
         }
 
         string memory oldURI = _tokenIntegrity[tokenId].manifestURI;
+        _tokenIntegrity[tokenId].manifestCIDString = newManifestCIDString;
         _tokenIntegrity[tokenId].manifestURI = newURI;
+        _tokenIntegrity[tokenId].manifestContentHash = newManifestContentHash;
 
         // Keep ERC-721 tokenURI in sync.
         _setTokenURI(tokenId, newURI);
 
-        emit ManifestURIUpdated(tokenId, oldURI, newURI);
+        emit ManifestURIUpdated(tokenId, oldURI, newURI, newManifestCIDString, newManifestContentHash);
     }
 
     // ─── Derivatives ─────────────────────────────────────────────────────
@@ -257,7 +294,7 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
 
         _derivatives[tokenId][key] = Derivative({
             derivativeCID:  derivativeCID,
-            derivedFromCID: _tokenIntegrity[tokenId].cid,
+            derivedFromCID: _tokenIntegrity[tokenId].canonicalCID,
             role:           role,
             authorisedBy:   msg.sender,
             authorisedAt:   block.timestamp,

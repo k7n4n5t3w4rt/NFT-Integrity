@@ -25,7 +25,8 @@ The contract (`NFTIntegrity.sol`) stores what must be tamper-proof:
 | Concern | Mechanism |
 |---|---|
 | Canonical identity | `bytes canonicalCID` — set once at mint, never mutable |
-| Human-readable CID | `string cidString` — for off-chain display |
+| Human-readable canonical CID | `string canonicalCIDString` — for off-chain display |
+| Manifest CID | `string manifestCIDString` — the CID of the manifest JSON itself (distinct file, distinct CID) |
 | Manifest pointer | `manifestURI` — points to the full JSON manifest (IPFS or otherwise) |
 | Authorised derivatives | Mappings with enumeration; only `DERIVATIVE_MANAGER_ROLE` can add/revoke |
 | Gateways & mirrors | `RetrievalConfig` struct — updatable by owner without affecting identity |
@@ -38,8 +39,17 @@ The [JSON manifest](schemas/integrity-manifest-v1.schema.json) captures everythi
 - **`canonicalMedia`** — CID, MIME type, and the integrity rule
 - **`retrieval`** — preferred and fallback gateways, HTTP mirrors
 - **`rights`** — licence CID and summary
-- **`governance`** — who can change what, and under what rules
-- **`authorisedDerivatives`** — exhibition copies, thumbnails, format conversions
+
+> **Note on governance:** Governance is enforced exclusively on-chain via the
+> role-based access control system (`DEFAULT_ADMIN_ROLE`, `MANIFEST_UPDATER_ROLE`,
+> `DERIVATIVE_MANAGER_ROLE`). The manifest does not duplicate governance policy;
+> consumers should query the contract directly for current role assignments and
+> access control rules.
+
+> **Note on derivatives:** Authorised derivatives are managed exclusively on-chain via
+> `authoriseDerivative()` / `revokeDerivative()` (controlled by `DERIVATIVE_MANAGER_ROLE`).
+> The manifest does not duplicate this live state; consumers should query the contract directly
+> using `derivativeCount()`, `derivativeAt()`, and `isAuthorisedDerivative()`.
 
 ### The `ipfsImport` section — the reproducible recipe
 
@@ -187,13 +197,14 @@ forge script script/DeployNFTIntegrity.s.sol --broadcast --rpc-url $RPC_URL
 #    Or encode it with the @ipld/dag-pb tooling. Alternatively, call mint()
 #    through Etherscan's UI or a script that handles the CID encoding.
 #
-#    The cidString and manifestURI are plain strings:
+#    The canonicalCIDString, manifestCIDString, and manifestURI are plain strings:
 export CONTRACT_ADDRESS=0x...   # from deploy output
 cast send $CONTRACT_ADDRESS \
-  "mint(address,bytes,string,string)" \
+  "mint(address,bytes,string,string,string)" \
   0xYourRecipientAddress \
   0x<RAW-CID-HEX> \
   "<YOUR-CID>" \
+  "<MANIFEST-CID>" \
   "ipfs://<MANIFEST-CID>" \
   --private-key $PRIVATE_KEY \
   --rpc-url $RPC_URL
