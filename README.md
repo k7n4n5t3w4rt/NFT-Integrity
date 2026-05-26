@@ -45,21 +45,32 @@ The [JSON manifest](schemas/integrity-manifest-v1.schema.json) captures everythi
 
 This is the critical section. It records every setting that went into producing the CID from the original bytes. Anyone with an exact copy of the file who imports it with these same settings will get the identical CID. A different setting *anywhere* in this list produces a different CID.
 
-| Setting | Default |
+#### CID-affecting (required — no defaults)
+
+These must be passed explicitly to `create-manifest.js`. They are the exact parameters you used with `ipfs add` to produce your CID:
+
+| Setting | Description |
 |---|---|
-| `implementation` | `kubo` |
-| `implementationVersion` | `0.29.0` |
-| `cidVersion` | `1` |
-| `hashFunction` | `sha2-256` |
-| `codec` | `dag-pb` |
-| `unixfs` | `true` |
-| `rawLeaves` | `true` |
-| `chunker` | `size-262144` |
-| `pin` | `true` |
-| `wrapWithDirectory` | `false` |
-| `nocopy` | `false` |
-| `inline` | `false` |
-| `cidBase` | `base32` |
+| `cidVersion` | CID version (`0` or `1`) |
+| `hashFunction` | Multihash function (e.g. `sha2-256`) |
+| `codec` | IPLD codec (e.g. `dag-pb`, `raw`) |
+| `chunker` | Chunking strategy (e.g. `size-262144`) |
+| `rawLeaves` | Whether leaf nodes use raw codec (`true`/`false`) |
+| `unixfs` | Whether UnixFS wrapping is used (`true`/`false`) |
+| `wrapWithDirectory` | Whether the file is wrapped in a directory (`true`/`false`) |
+| `inline` | Whether small blocks are inlined (`true`/`false`) |
+
+#### Non-CID-affecting (have defaults)
+
+These don't change the CID but are recorded for provenance:
+
+| Setting | Default | Description |
+|---|---|---|
+| `implementation` | `kubo` | IPFS implementation used |
+| `implementationVersion` | `0.29.0` | Version of the implementation |
+| `pin` | `true` | Whether pinning was requested |
+| `nocopy` | `false` | Whether filestore was used |
+| `cidBase` | `base32` | Multibase encoding for display |
 
 ### What is updatable on-chain
 
@@ -72,6 +83,19 @@ This is the critical section. It records every setting that went into producing 
 
 **What cannot change:** the canonical CID. Once minted, there is no setter, no override, no loophole. That is the point.
 
+## Prerequisites
+
+You need these installed on your machine before starting:
+
+| Tool | Why | Install |
+|---|---|---|
+| **Foundry** (`forge`, `cast`) | Build, test, and deploy the contract | `curl -L https://foundry.paradigm.xyz \| bash` then `foundryup` |
+| **Node.js** (v16+) | Run the manifest generator script | [nodejs.org](https://nodejs.org) |
+| **IPFS CLI** (`ipfs`, aka kubo) | Add your media file to IPFS and get its CID | [docs.ipfs.tech/install](https://docs.ipfs.tech/install/command-line/) |
+| **Git** | Clone the repository | [git-scm.com](https://git-scm.com) |
+
+The contract uses two Solidity dependencies (**OpenZeppelin** and **forge-std**) which are included as Git submodules — Foundry handles them automatically.
+
 ## Project structure
 
 ```
@@ -80,7 +104,7 @@ This is the critical section. It records every setting that went into producing 
 │   └── interfaces/
 │       └── IIntegrityNFT.sol         # Full interface
 ├── test/
-│   └── NFTIntegrity.t.sol           # 29 Foundry tests
+│   └── NFTIntegrity.t.sol           # 30 Foundry tests
 ├── script/
 │   └── DeployNFTIntegrity.s.sol     # Forge deploy script
 ├── schemas/
@@ -96,18 +120,15 @@ This is the critical section. It records every setting that went into producing 
 ## Quick start
 
 ```bash
-# Install dependencies
-forge install
-
-# Build
+# 1. Install dependencies (submodules come with the repo)
 forge build
 
-# Run tests
+# 2. Run tests
 forge test
 
-# Add your media file to IPFS and get its CID.
-# The flags you use here are your import recipe — write them down.
-# Every flag that affects the CID must be passed explicitly.
+# 3. Add your media file to IPFS and get its CID.
+#    The flags you use here are your import recipe — write them down.
+#    Every flag that affects the CID must be passed explicitly.
 ipfs add \
   --cid-version 1 \
   --hash sha2-256 \
@@ -115,8 +136,8 @@ ipfs add \
   my-artwork.png
 # → added <YOUR-CID> my-artwork.png
 
-# Generate a manifest. Pass exactly the same import settings used with ipfs add.
-# All CID-affecting parameters are required — no defaults are assumed.
+# 4. Generate a manifest. Pass exactly the same import settings from step 3.
+#    All CID-affecting parameters are required — no defaults are assumed.
 node scripts/create-manifest.js \
   --cid <YOUR-CID> \
   --mime image/png \
@@ -134,11 +155,48 @@ node scripts/create-manifest.js \
   --tokenId 1 \
   --output manifest.json
 
-# Deploy — set RPC_URL to your target network first:
-#   export RPC_URL=https://sepolia.infura.io/v3/YOUR-KEY  (testnet)
-#   export RPC_URL=https://eth-mainnet.g.alchemy.com/v2/YOUR-KEY  (mainnet)
-#   export RPC_URL=http://localhost:8545  (local Anvil)
+# 5. Upload the manifest to IPFS to get its CID
+ipfs add manifest.json
+# → added <MANIFEST-CID> manifest.json
+
+# 6. Deploy the contract.
+#    Set these env vars first:
+#      RPC_URL          — your Ethereum RPC endpoint
+#      PRIVATE_KEY      — deployer wallet private key (Foundry uses this automatically)
+#      MINTER_ADDRESS   — address that gets MINTER_ROLE
+#      MANIFEST_ADDR    — address that gets MANIFEST_UPDATER_ROLE
+#      DERIVATIVE_ADDR  — address that gets DERIVATIVE_MANAGER_ROLE
+#    (NFT_NAME and NFT_SYMBOL are optional — they default to
+#     "NFTIntegrity Collection" / "INTEGRITY")
+export RPC_URL=https://sepolia.infura.io/v3/YOUR-KEY
+export PRIVATE_KEY=your-deployer-private-key
+export MINTER_ADDRESS=0xYourMinterAddress
+export MANIFEST_ADDR=0xYourManifestUpdaterAddress
+export DERIVATIVE_ADDR=0xYourDerivativeManagerAddress
+
 forge script script/DeployNFTIntegrity.s.sol --broadcast --rpc-url $RPC_URL
+# → NFTIntegrity deployed at: 0x...
+
+# 7. Mint a token.
+#    The contract's mint() takes the raw binary CID as bytes — you need to
+#    decode the CID string to hex first. One way: use Node.js:
+#      node -e "const {CID} = require('multiformats/cid');
+#               CID.parse('<YOUR-CID>').bytes.then(b =>
+#                 console.log('0x' + Buffer.from(b).toString('hex')))"
+#
+#    Or encode it with the @ipld/dag-pb tooling. Alternatively, call mint()
+#    through Etherscan's UI or a script that handles the CID encoding.
+#
+#    The cidString and manifestURI are plain strings:
+export CONTRACT_ADDRESS=0x...   # from deploy output
+cast send $CONTRACT_ADDRESS \
+  "mint(address,bytes,string,string)" \
+  0xYourRecipientAddress \
+  0x<RAW-CID-HEX> \
+  "<YOUR-CID>" \
+  "ipfs://<MANIFEST-CID>" \
+  --private-key $PRIVATE_KEY \
+  --rpc-url $RPC_URL
 ```
 
 ## What this is not
@@ -149,4 +207,4 @@ forge script script/DeployNFTIntegrity.s.sol --broadcast --rpc-url $RPC_URL
 
 ## Licence
 
-MIT — see the contract SPDX headers.
+MIT — see [LICENSE](LICENSE) and the contract SPDX headers.
