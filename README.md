@@ -108,11 +108,12 @@ forge test
 # Add your media file to IPFS and get its CID.
 # The flags you use here are your import recipe — write them down.
 # They must match what goes into the manifest.
+# (codec=dag-pb and rawLeaves=true are kubo defaults for --cid-version 1,
+#  so there is no explicit --codec or --raw-leaves flag to pass.)
 ipfs add \
   --cid-version 1 \
   --hash sha2-256 \
   --chunker size-262144 \
-  --raw-leaves \
   my-artwork.png
 # → added bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi my-artwork.png
 
