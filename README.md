@@ -134,7 +134,10 @@ node scripts/create-manifest.js \
   --tokenId 1 \
   --output manifest.json
 
-# Deploy
+# Deploy — set RPC_URL to your target network first:
+#   export RPC_URL=https://sepolia.infura.io/v3/YOUR-KEY  (testnet)
+#   export RPC_URL=https://eth-mainnet.g.alchemy.com/v2/YOUR-KEY  (mainnet)
+#   export RPC_URL=http://localhost:8545  (local Anvil)
 forge script script/DeployNFTIntegrity.s.sol --broadcast --rpc-url $RPC_URL
 ```
 
