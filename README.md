@@ -119,9 +119,15 @@ ipfs add \
 # → added bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi my-artwork.png
 
 # Generate a manifest using the CID you just got.
-# The script applies the default ipfsImport settings above; override any
-# with dot-path flags, e.g. --ipfsImport.chunker size-1048576
+# The script embeds defaults matching the ipfs add flags above;
+# pass them explicitly to lock the recipe into your command:
 node scripts/create-manifest.js \
+  --cid <YOUR-CID> \
+  --mime image/png \
+  --ipfsImport.cidVersion 1 \
+  --ipfsImport.hashFunction sha2-256 \
+  --ipfsImport.codec dag-pb \
+  --ipfsImport.chunker size-262144 \
   --cid <YOUR-CID> \
   --mime image/png \
   --title "My Work" \
