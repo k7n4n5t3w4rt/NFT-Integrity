@@ -50,6 +50,14 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
     mapping(uint256 => mapping(bytes32 => uint256)) private _derivativeIndex;
 
     // ─── Retrieval configuration ─────────────────────────────────────────
+    //
+    // Design note: RetrievalConfig is contract-level (shared by all tokens),
+    // not per-token. Gateways describe *how* to retrieve content from IPFS —
+    // they are collection-wide infrastructure, not per-artefact metadata.
+    // Every token records its own canonical CID (content address), so the
+    // same gateway config suffices regardless of which token's content is
+    // being fetched. If per-token gateways are needed, that should be
+    // modelled in the off-chain manifest instead.
 
     RetrievalConfig private _retrievalConfig;
 
@@ -109,6 +117,25 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
         emit RoleRevoked(roleId, msg.sender);
     }
 
+    /// @notice Override Ownable._transferOwnership to keep _roles[DEFAULT_ADMIN_ROLE]
+    ///         in sync with the Ownable owner. Without this, transferOwnership()
+    ///         would change _owner but not the role mapping, creating two
+    ///         divergent admin states.
+    function _transferOwnership(address newOwner) internal virtual override {
+        super._transferOwnership(newOwner);
+
+        address previousAdmin = _roles[DEFAULT_ADMIN_ROLE];
+        if (previousAdmin != address(0)) {
+            emit RoleRevoked(DEFAULT_ADMIN_ROLE, previousAdmin);
+        }
+
+        _roles[DEFAULT_ADMIN_ROLE] = newOwner;
+
+        if (newOwner != address(0)) {
+            emit RoleGranted(DEFAULT_ADMIN_ROLE, newOwner);
+        }
+    }
+
     // ─── Minting ─────────────────────────────────────────────────────────
 
     /// @inheritdoc IIntegrityNFT
@@ -163,7 +190,10 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
         returns (bool)
     {
         _requireMinted(tokenId);
-        return keccak256(_tokenIntegrity[tokenId].cid) == keccak256(cid);
+        // Compare via hash — Solidity does not support == across bytes storage
+        // and bytes calldata. CIDs are small, so gas difference is negligible.
+        return keccak256(abi.encodePacked(_tokenIntegrity[tokenId].cid))
+            == keccak256(abi.encodePacked(cid));
     }
 
     // ─── Manifest Management ─────────────────────────────────────────────
@@ -174,6 +204,31 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
         onlyRole(MANIFEST_UPDATER_ROLE)
     {
         _requireMinted(tokenId);
+
+        // Enforce that the CID embedded in newURI (the part after "ipfs://")
+        // matches the token's canonical CID. This is the on-chain guarantee
+        // that the manifest URI always points to the same content as the
+        // canonical CID.
+        bytes memory newURIBytes = bytes(newURI);
+        bytes memory cidString  = bytes(_tokenIntegrity[tokenId].cidString);
+        bytes memory prefix     = bytes("ipfs://");
+
+        require(
+            newURIBytes.length == prefix.length + cidString.length,
+            "NFTIntegrity: manifest URI length mismatch"
+        );
+        for (uint i = 0; i < prefix.length; i++) {
+            require(
+                newURIBytes[i] == prefix[i],
+                "NFTIntegrity: URI must start with ipfs://"
+            );
+        }
+        for (uint i = 0; i < cidString.length; i++) {
+            require(
+                newURIBytes[i + prefix.length] == cidString[i],
+                "NFTIntegrity: manifest CID must match canonical CID"
+            );
+        }
 
         string memory oldURI = _tokenIntegrity[tokenId].manifestURI;
         _tokenIntegrity[tokenId].manifestURI = newURI;
@@ -342,6 +397,10 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
 
     function _grantRole(bytes32 role, address account) internal {
         require(account != address(0), "NFTIntegrity: zero address");
+        address previous = _roles[role];
+        if (previous != address(0)) {
+            emit RoleRevoked(role, previous);
+        }
         _roles[role] = account;
         emit RoleGranted(role, account);
     }

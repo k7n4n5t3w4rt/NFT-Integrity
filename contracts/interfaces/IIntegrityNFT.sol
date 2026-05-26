@@ -55,6 +55,11 @@ interface IIntegrityNFT is IERC721 {
     /// @param preferredGateway Primary IPFS gateway for retrieval.
     /// @param fallbackGateways Fallback gateways (comma-separated or JSON array).
     /// @param mirrors          Array of HTTP mirror URIs.
+    ///
+    /// @dev RetrievalConfig is intentionally contract-level, not per-token.
+    /// Gateways represent retrieval infrastructure ("how to reach IPFS"),
+    /// which is a collection-wide concern. The CID in TokenIntegrity already
+    /// provides content addressing independent of any specific gateway.
     struct RetrievalConfig {
         string   preferredGateway;
         string   fallbackGateways;
@@ -131,6 +136,8 @@ interface IIntegrityNFT is IERC721 {
 
     /// @notice Update the manifest URI for a token.
     /// @dev Only MANIFEST_UPDATER_ROLE. The canonical CID does NOT change.
+    /// The CID embedded in `newURI` (everything after `ipfs://`) must match
+    /// the token's canonical CID — this is enforced on-chain.
     function updateManifestURI(uint256 tokenId, string calldata newURI)
         external;
 

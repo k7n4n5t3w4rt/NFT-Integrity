@@ -177,7 +177,7 @@ contract NFTIntegrityTest is Test {
         vm.prank(minter);
         nft.mint(user, SAMPLE_CID_BYTES, SAMPLE_CID_STRING, SAMPLE_MANIFEST);
 
-        string memory newURI = "ipfs://bafybeihrnrr2f3q3e2lsmxtsquj5cs4g7pjxkqq36sulbd5dawg62g5vqa";
+        string memory newURI = string.concat("ipfs://", SAMPLE_CID_STRING);
 
         vm.prank(manifestUpd);
         nft.updateManifestURI(1, newURI);
@@ -190,9 +190,21 @@ contract NFTIntegrityTest is Test {
         vm.prank(minter);
         nft.mint(user, SAMPLE_CID_BYTES, SAMPLE_CID_STRING, SAMPLE_MANIFEST);
 
+        string memory newURI = string.concat("ipfs://", SAMPLE_CID_STRING);
+
         vm.prank(user);
         vm.expectRevert("NFTIntegrity: not authorised for this role");
-        nft.updateManifestURI(1, "ipfs://new");
+        nft.updateManifestURI(1, newURI);
+    }
+
+    function testUpdateManifestURIRevertsCIDMismatch() public {
+        vm.prank(minter);
+        nft.mint(user, SAMPLE_CID_BYTES, SAMPLE_CID_STRING, SAMPLE_MANIFEST);
+
+        // A URI with a CID that doesn't match the canonical CID must revert.
+        vm.prank(manifestUpd);
+        vm.expectRevert("NFTIntegrity: manifest CID must match canonical CID");
+        nft.updateManifestURI(1, "ipfs://bafybeihrnrr2f3q3e2lsmxtsquj5cs4g7pjxkqq36sulbd5dawg62g5vqa");
     }
 
     // ─── Canonical CID Immutability (implicit) ───────────────────────────
@@ -207,7 +219,7 @@ contract NFTIntegrityTest is Test {
 
         // Even after manifest update, CID stays the same.
         vm.prank(manifestUpd);
-        nft.updateManifestURI(1, "ipfs://other-manifest");
+        nft.updateManifestURI(1, string.concat("ipfs://", SAMPLE_CID_STRING));
 
         ti = nft.tokenIntegrity(1);
         assertEq(ti.cid, SAMPLE_CID_BYTES);

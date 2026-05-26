@@ -149,6 +149,7 @@ Recommended:
   --contract  ADDR    Contract address (0x...)
   --tokenId   NUM     Token ID
   --licence   CID     CID of the licence document
+  --tokenURI  URI     Token URI (known only after manifest is uploaded to IPFS)
 
 Optional overrides (dot-separated path):
   --ipfsImport.implementation     STR   (default: kubo)
@@ -184,12 +185,6 @@ Example:
   // Deep-clone defaults
   const manifest = JSON.parse(JSON.stringify(DEFAULTS));
 
-  // Apply CLI overrides
-  for (const [key, value] of Object.entries(args)) {
-    if (["cid", "mime", "output", "help", "h"].includes(key)) continue;
-    // Skip these; handled separately or not override keys
-  }
-
   // Set work fields
   if (args.title) manifest.work.title = args.title;
   if (args.artist) manifest.work.artist = args.artist;
@@ -204,7 +199,9 @@ Example:
   manifest.canonicalMedia.cid = args.cid;
   manifest.canonicalMedia.uri = `ipfs://${args.cid}`;
   manifest.canonicalMedia.mimeType = args.mime;
-  manifest.token.tokenURI = `ipfs://MANIFEST_CID`; // placeholder – replace after uploading
+
+  // Set tokenURI (only when known — typically after manifest is uploaded to IPFS)
+  if (args.tokenURI) manifest.token.tokenURI = args.tokenURI;
 
   // Set licence
   if (args.licence) {
