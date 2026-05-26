@@ -49,7 +49,7 @@
 ## Issue 4 — Redundant remappings in foundry.toml + remappings.txt
 
 - **ID:** 004
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/004-remove-remappings-txt`
 - **Severity:** Config
 - **Files:** `foundry.toml`, `remappings.txt`
