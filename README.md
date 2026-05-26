@@ -42,6 +42,17 @@ The [JSON manifest](schemas/integrity-manifest-v1.schema.json) captures everythi
 - **`governance`** — who can change what, and under what rules
 - **`authorisedDerivatives`** — exhibition copies, thumbnails, format conversions
 
+### What is updatable on-chain
+
+| Thing | Who can change it | Notes |
+|---|---|---|
+| **`manifestURI`** | `MANIFEST_UPDATER_ROLE` | The manifest lives off-chain. You can move it or re-upload it; only the pointer changes. The CID inside the manifest must still match the canonical CID. |
+| **Retrieval config** (gateways, mirrors) | Owner | Gateways come and go. Swapping them out does not touch the artefact's identity — they are just routes. |
+| **Authorised derivatives** | `DERIVATIVE_MANAGER_ROLE` | Register an exhibition copy, thumbnail, or format conversion; revoke it if needed. |
+| **Roles** | Owner | Who can mint, update manifests, or manage derivatives — all reassignable. |
+
+**What cannot change:** the canonical CID. Once minted, there is no setter, no override, no loophole. That is the point.
+
 ## Project structure
 
 ```
