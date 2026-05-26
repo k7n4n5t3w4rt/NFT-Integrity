@@ -1,0 +1,52 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Hardhat: Compile",
+      "type": "shell",
+      "command": "npx hardhat compile",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Hardhat: Test",
+      "type": "shell",
+      "command": "npx hardhat test",
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Hardhat: Clean",
+      "type": "shell",
+      "command": "npx hardhat clean",
+      "problemMatcher": []
+    },
+    {
+      "label": "Hardhat: Node (local)",
+      "type": "shell",
+      "command": "npx hardhat node",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Foundry: Build",
+      "type": "shell",
+      "command": "forge build",
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Foundry: Test",
+      "type": "shell",
+      "command": "forge test -vvv",
+      "problemMatcher": [],
+      "group": "test"
+    }
+  ]
+}

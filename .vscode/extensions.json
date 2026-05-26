@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "NomicFoundation.hardhat-solidity"
+  ],
+  "unwantedRecommendations": [
+    "juanblanco.solidity",
+    "trufflesuite-csi.truffle-vscode"
+  ]
+}

@@ -1,0 +1,330 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/nft-integrity-manifest/v1",
+  "title": "NFT Integrity Manifest",
+  "description": "CID-centric manifest for ERC-721 tokens. The CID is the canonical artefact identity. Import settings are the recipe for reproducing that CID. Gateways are mutable retrieval routes.",
+  "type": "object",
+  "required": ["schema", "token", "work", "canonicalMedia", "ipfsImport", "retrieval", "rights", "governance"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "description": "Schema identifier for this manifest version.",
+      "const": "https://example.org/nft-integrity-manifest/v1"
+    },
+    "token": {
+      "type": "object",
+      "required": ["standard", "contract", "tokenId"],
+      "properties": {
+        "standard": {
+          "type": "string",
+          "description": "Token standard identifier.",
+          "examples": ["ERC-721"]
+        },
+        "contract": {
+          "type": "string",
+          "description": "Contract address.",
+          "pattern": "^0x[a-fA-F0-9]{40}$"
+        },
+        "tokenId": {
+          "type": "string",
+          "description": "Token ID as a decimal string.",
+          "pattern": "^[0-9]+$"
+        },
+        "tokenURI": {
+          "type": "string",
+          "description": "ERC-721 tokenURI pointing to this manifest.",
+          "format": "uri"
+        }
+      }
+    },
+    "work": {
+      "type": "object",
+      "required": ["title", "artist", "created"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title of the work."
+        },
+        "artist": {
+          "type": "string",
+          "description": "Artist or creator name."
+        },
+        "created": {
+          "type": "string",
+          "format": "date",
+          "description": "Creation date (ISO 8601)."
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the work."
+        }
+      }
+    },
+    "canonicalMedia": {
+      "type": "object",
+      "required": ["role", "uri", "cid", "mimeType", "integrityRule"],
+      "properties": {
+        "role": {
+          "type": "string",
+          "const": "canonical",
+          "description": "Must be 'canonical' for the primary artefact."
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "IPFS URI of the canonical artefact (ipfs://[CID])."
+        },
+        "cid": {
+          "type": "string",
+          "description": "The canonical IPFS CID."
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "MIME type of the canonical artefact.",
+          "examples": ["image/png", "video/mp4", "audio/flac"]
+        },
+        "integrityRule": {
+          "type": "string",
+          "description": "Rule describing how to verify this artefact against its CID."
+        }
+      }
+    },
+    "ipfsImport": {
+      "type": "object",
+      "required": ["implementation", "cidVersion", "hashFunction", "codec"],
+      "properties": {
+        "implementation": {
+          "type": "string",
+          "description": "IPFS implementation used.",
+          "examples": ["kubo", "helia"]
+        },
+        "implementationVersion": {
+          "type": "string",
+          "description": "Version of the implementation."
+        },
+        "cidVersion": {
+          "type": "integer",
+          "enum": [0, 1],
+          "description": "CID version used."
+        },
+        "hashFunction": {
+          "type": "string",
+          "description": "Multihash function name.",
+          "examples": ["sha2-256", "sha3-256", "blake2b-256"]
+        },
+        "codec": {
+          "type": "string",
+          "description": "IPLD codec.",
+          "examples": ["dag-pb", "raw", "dag-cbor", "dag-json"]
+        },
+        "unixfs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether UnixFS wrapping was used."
+        },
+        "rawLeaves": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether raw leaves were used."
+        },
+        "chunker": {
+          "type": "string",
+          "default": "size-262144",
+          "description": "Chunking strategy used."
+        },
+        "pin": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether pinning was requested."
+        },
+        "wrapWithDirectory": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the file was wrapped in a directory."
+        },
+        "nocopy": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether nocopy (filestore) was used."
+        },
+        "inline": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether inline blocks were used."
+        },
+        "cidBase": {
+          "type": "string",
+          "default": "base32",
+          "description": "Multibase encoding for CID display.",
+          "examples": ["base32", "base58btc", "base16"]
+        }
+      }
+    },
+    "retrieval": {
+      "type": "object",
+      "required": ["preferredGateway", "fallbackGateways"],
+      "properties": {
+        "preferredGateway": {
+          "type": "string",
+          "format": "uri",
+          "description": "Primary IPFS gateway for retrieval."
+        },
+        "fallbackGateways": {
+          "type": "array",
+          "items": { "type": "string", "format": "uri" },
+          "description": "Fallback IPFS gateways."
+        },
+        "mirrors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["role", "uri", "verification"],
+            "properties": {
+              "role": {
+                "type": "string",
+                "description": "Role of this mirror.",
+                "examples": ["canonical-mirror", "archive-copy"]
+              },
+              "uri": {
+                "type": "string",
+                "format": "uri",
+                "description": "HTTP(S) URI of the mirror."
+              },
+              "verification": {
+                "type": "string",
+                "description": "How to verify this mirror reproduces the canonical CID."
+              }
+            }
+          },
+          "description": "HTTP mirrors of the canonical artefact."
+        }
+      }
+    },
+    "rights": {
+      "type": "object",
+      "required": ["licenceURI", "licenceCID", "summary"],
+      "properties": {
+        "licenceURI": {
+          "type": "string",
+          "format": "uri",
+          "description": "IPFS URI of the licence document."
+        },
+        "licenceCID": {
+          "type": "string",
+          "description": "CID of the licence document."
+        },
+        "summary": {
+          "type": "string",
+          "description": "Human-readable summary of rights."
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "required": [
+        "gatewayUpdates",
+        "mirrorUpdates",
+        "canonicalMediaUpdates",
+        "derivativeApprovals"
+      ],
+      "properties": {
+        "gatewayUpdates": {
+          "type": "object",
+          "required": ["allowedBy", "rule"],
+          "properties": {
+            "allowedBy": {
+              "type": "string",
+              "description": "Who can update gateways."
+            },
+            "rule": {
+              "type": "string",
+              "description": "Rule governing gateway updates."
+            }
+          }
+        },
+        "mirrorUpdates": {
+          "type": "object",
+          "required": ["allowedBy", "rule"],
+          "properties": {
+            "allowedBy": {
+              "type": "string",
+              "description": "Who can update mirrors."
+            },
+            "rule": {
+              "type": "string",
+              "description": "Rule governing mirror updates."
+            }
+          }
+        },
+        "canonicalMediaUpdates": {
+          "type": "object",
+          "required": ["allowedBy", "rule"],
+          "properties": {
+            "allowedBy": {
+              "type": "string",
+              "description": "Who can update the canonical media CID."
+            },
+            "rule": {
+              "type": "string",
+              "description": "Rule governing canonical media updates."
+            }
+          }
+        },
+        "derivativeApprovals": {
+          "type": "object",
+          "required": ["allowedBy", "rule"],
+          "properties": {
+            "allowedBy": {
+              "type": "string",
+              "description": "Who can approve derivatives."
+            },
+            "rule": {
+              "type": "string",
+              "description": "Rule governing derivative approvals."
+            }
+          }
+        }
+      }
+    },
+    "authorisedDerivatives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["role", "uri", "cid", "derivedFromCID", "authorisedBy", "dateAuthorised"],
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Role of this derivative."
+          },
+          "uri": {
+            "type": "string",
+            "format": "uri",
+            "description": "IPFS URI of the derivative."
+          },
+          "cid": {
+            "type": "string",
+            "description": "CID of the derivative."
+          },
+          "derivedFromCID": {
+            "type": "string",
+            "description": "The canonical CID this derives from."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why this derivative was authorised."
+          },
+          "authorisedBy": {
+            "type": "string",
+            "description": "Who authorised this derivative."
+          },
+          "dateAuthorised": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of authorisation (ISO 8601)."
+          }
+        }
+      },
+      "description": "Explicitly authorised derivatives of the canonical artefact."
+    }
+  }
+}

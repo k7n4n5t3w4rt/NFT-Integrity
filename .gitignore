@@ -1,0 +1,15 @@
+# Environment secrets
+.env
+
+# Node
+node_modules/
+
+# Build output
+out/
+dist/
+cache/
+artifacts/
+
+# Foundry
+broadcast/
+cache_forge/
