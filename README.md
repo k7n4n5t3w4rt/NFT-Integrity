@@ -107,9 +107,7 @@ forge test
 
 # Add your media file to IPFS and get its CID.
 # The flags you use here are your import recipe — write them down.
-# They must match what goes into the manifest.
-# (codec=dag-pb and rawLeaves=true are kubo defaults for --cid-version 1,
-#  so there is no explicit --codec or --raw-leaves flag to pass.)
+# Every flag that affects the CID must be passed explicitly.
 ipfs add \
   --cid-version 1 \
   --hash sha2-256 \
@@ -117,16 +115,19 @@ ipfs add \
   my-artwork.png
 # → added <YOUR-CID> my-artwork.png
 
-# Generate a manifest. Pass the same import settings you used with ipfs add.
-# The script fills in sensible defaults for anything you don't specify.
+# Generate a manifest. Pass exactly the same import settings used with ipfs add.
+# All CID-affecting parameters are required — no defaults are assumed.
 node scripts/create-manifest.js \
   --cid <YOUR-CID> \
   --mime image/png \
   --ipfsImport.cidVersion 1 \
   --ipfsImport.hashFunction sha2-256 \
+  --ipfsImport.codec dag-pb \
   --ipfsImport.chunker size-262144 \
-  --cid <YOUR-CID> \
-  --mime image/png \
+  --ipfsImport.rawLeaves true \
+  --ipfsImport.unixfs true \
+  --ipfsImport.wrapWithDirectory false \
+  --ipfsImport.inline false \
   --title "My Work" \
   --artist "Jane Doe" \
   --contract 0x1234567890123456789012345678901234567890 \

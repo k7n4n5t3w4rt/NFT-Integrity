@@ -3,18 +3,9 @@
 /**
  * create-manifest.js — Create an NFT Integrity Manifest (v1).
  *
- * Usage:
- *   node scripts/create-manifest.js \
- *     --title "My Artwork" \
- *     --artist "Artist Name" \
- *     --cid bafybei... \
- *     --mime image/png \
- *     --output manifest.json
- *
- * The script produces a JSON manifest conforming to the
- * NFT Integrity Manifest v1 schema. It fills in sensible
- * defaults for IPFS import settings, retrieval gateways,
- * and governance rules while letting you override any field.
+ * All CID-affecting import parameters are required and have no defaults.
+ * This ensures the manifest accurately captures the exact recipe used to
+ * produce the canonical CID — no parameter is ever assumed or guessed.
  */
 
 const fs = require("fs");
@@ -42,16 +33,18 @@ const DEFAULTS = {
   ipfsImport: {
     implementation: "kubo",
     implementationVersion: "0.29.0",
-    cidVersion: 1,
-    hashFunction: "sha2-256",
-    codec: "dag-pb",
-    unixfs: true,
-    rawLeaves: true,
-    chunker: "size-262144",
+    // CID-affecting — no defaults; must be explicitly provided
+    cidVersion: null,
+    hashFunction: null,
+    codec: null,
+    unixfs: null,
+    rawLeaves: null,
+    chunker: null,
+    wrapWithDirectory: null,
+    inline: null,
+    // Non-CID-affecting helpers
     pin: true,
-    wrapWithDirectory: false,
     nocopy: false,
-    inline: false,
     cidBase: "base32",
   },
 
@@ -140,8 +133,18 @@ function main() {
     console.log(`Usage: node scripts/create-manifest.js [OPTIONS]
 
 Required:
-  --cid       CID     IPFS CID of the canonical artefact
-  --mime      TYPE    MIME type (e.g. image/png, video/mp4)
+  --cid                        CID     IPFS CID of the canonical artefact
+  --mime                       TYPE    MIME type (e.g. image/png, video/mp4)
+
+Required CID-affecting import parameters (must match the flags used with ipfs add):
+  --ipfsImport.cidVersion      NUM     CID version (0 or 1)
+  --ipfsImport.hashFunction    STR     Multihash function (e.g. sha2-256)
+  --ipfsImport.codec           STR     IPLD codec (e.g. dag-pb, raw)
+  --ipfsImport.chunker         STR     Chunking strategy (e.g. size-262144)
+  --ipfsImport.rawLeaves       BOOL    Raw leaves (true or false)
+  --ipfsImport.unixfs          BOOL    UnixFS wrapping (true or false)
+  --ipfsImport.wrapWithDirectory BOOL  Wrap in directory (true or false)
+  --ipfsImport.inline          BOOL    Inline small blocks (true or false)
 
 Recommended:
   --title     STR     Title of the work
@@ -154,10 +157,6 @@ Recommended:
 Optional overrides (dot-separated path):
   --ipfsImport.implementation     STR   (default: kubo)
   --ipfsImport.implementationVersion STR
-  --ipfsImport.cidVersion         NUM   (0 or 1)
-  --ipfsImport.hashFunction       STR   (default: sha2-256)
-  --ipfsImport.codec              STR   (default: dag-pb)
-  --ipfsImport.chunker            STR   (default: size-262144)
   --retrieval.preferredGateway    URI
   --retrieval.fallbackGateways    JSON array string
   --governance.canonicalMediaUpdates.allowedBy STR
@@ -168,6 +167,14 @@ Example:
   node scripts/create-manifest.js \\
     --cid bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi \\
     --mime image/png \\
+    --ipfsImport.cidVersion 1 \\
+    --ipfsImport.hashFunction sha2-256 \\
+    --ipfsImport.codec dag-pb \\
+    --ipfsImport.chunker size-262144 \\
+    --ipfsImport.rawLeaves true \\
+    --ipfsImport.unixfs true \\
+    --ipfsImport.wrapWithDirectory false \\
+    --ipfsImport.inline false \\
     --title "My Work" \\
     --artist "Jane Doe" \\
     --contract 0x1234567890123456789012345678901234567890 \\
@@ -180,6 +187,37 @@ Example:
   if (!args.cid || !args.mime) {
     console.error("Error: --cid and --mime are required. Use --help for usage.");
     process.exit(1);
+  }
+
+  // CID-affecting import params — all required (no defaults)
+  const CID_PARAMS = [
+    "ipfsImport.cidVersion",
+    "ipfsImport.hashFunction",
+    "ipfsImport.codec",
+    "ipfsImport.chunker",
+    "ipfsImport.rawLeaves",
+    "ipfsImport.unixfs",
+    "ipfsImport.wrapWithDirectory",
+    "ipfsImport.inline",
+  ];
+  const missing = CID_PARAMS.filter(p => args[p] === undefined);
+  if (missing.length > 0) {
+    console.error(
+      `Error: Missing required CID-affecting import parameters:\n  ${missing.map(p => `--${p}`).join("\n  ")}\n\nUse --help for usage.`
+    );
+    process.exit(1);
+  }
+
+  // Coerce boolean CID params properly
+  for (const p of ["ipfsImport.rawLeaves", "ipfsImport.unixfs", "ipfsImport.wrapWithDirectory", "ipfsImport.inline"]) {
+    if (args[p] !== undefined) {
+      if (args[p] === "true" || args[p] === true) args[p] = true;
+      else if (args[p] === "false" || args[p] === false) args[p] = false;
+      else {
+        console.error(`Error: --${p} must be "true" or "false", got "${args[p]}".`);
+        process.exit(1);
+      }
+    }
   }
 
   // Deep-clone defaults
