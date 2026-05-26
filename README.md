@@ -10,7 +10,7 @@ Most NFT contracts treat `tokenURI` as a loose pointer to "wherever the file liv
 
 NFT-Integrity makes the relationship explicit and verifiable:
 
-- Every token is anchored to a **single canonical IPFS CID** that is **immutable** once minted.
+- Every token is anchored to a **single canonical IPFS CID** that is **immutable** once minted. The CID is a content hash — it cannot change because it *is* the fingerprint of the original bytes. Even if every copy of the file disappears from the IPFS network, the CID remains as the identity; anyone who holds an exact true copy can re-add it and reproduce the same CID.
 - The contract records the **CID in full** (as `bytes`), not just a URI fragment.
 - **IPFS import settings** are captured off-chain in a structured manifest so anyone with an exact true copy of the original media file can **reproduce the identical CID** — even if the content disappears from the IPFS network.
 - **Gateways and mirrors are mutable retrieval infrastructure.** Updating them does not change the artefact's identity.
