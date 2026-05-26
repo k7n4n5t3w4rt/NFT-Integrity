@@ -79,7 +79,7 @@ A user who reads the diagram will look for a file that doesn't exist.
 ## Issue 5 — Custom role system silently overwrites existing holders
 
 - **ID:** 015
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/015-document-single-holder-roles`
 - **Severity:** Docs
 - **File:** `README.md`
