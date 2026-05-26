@@ -61,7 +61,7 @@
 ## Issue 5 — Dead remapping for @manifoldxyz/libraries-solidity
 
 - **ID:** 005
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/005-remove-manifoldxyz-remapping`
 - **Severity:** Config
 - **Files:** `foundry.toml`

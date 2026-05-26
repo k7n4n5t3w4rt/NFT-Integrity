@@ -10,5 +10,4 @@ evm_version = "london"
 remappings = [
     "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
     "@openzeppelin/contracts-upgradeable/=lib/@openzeppelin/contracts-upgradeable/",
-    "@manifoldxyz/libraries-solidity/=lib/@manifoldxyz/libraries-solidity/",
 ]
