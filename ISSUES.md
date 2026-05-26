@@ -12,7 +12,7 @@
 ## Issue 1 — README test count off by one (34 → 35)
 
 - **ID:** 011
-- **STATUS:** in-progress
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/011-readme-test-count-35`
 - **Severity:** Docs
 - **File:** `README.md`
