@@ -13,7 +13,7 @@
 ## Issue 1 — Invalid JSON: trailing comma in schema
 
 - **ID:** 001
-- **STATUS:** in-progress
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/001-schema-trailing-comma`
 - **Severity:** Critical
 - **File:** `schemas/integrity-manifest-v1.schema.json`
@@ -25,7 +25,7 @@
 ## Issue 2 — Invalid JSON: trailing comma in example manifest
 
 - **ID:** 002
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/002-example-manifest-trailing-comma`
 - **Severity:** Critical
 - **File:** `schemas/example-manifest.json`
@@ -37,7 +37,7 @@
 ## Issue 3 — README: manifestContentHash labels keccak256 but code computes sha256
 
 - **ID:** 003
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/003-readme-hash-docs`
 - **Severity:** Bug
 - **File:** `README.md`
@@ -49,7 +49,7 @@
 ## Issue 4 — Redundant remappings in foundry.toml + remappings.txt
 
 - **ID:** 004
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/004-remove-remappings-txt`
 - **Severity:** Config
 - **Files:** `foundry.toml`, `remappings.txt`
