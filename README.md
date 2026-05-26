@@ -197,15 +197,27 @@ forge script script/DeployNFTIntegrity.s.sol --broadcast --rpc-url $RPC_URL
 #    Or encode it with the @ipld/dag-pb tooling. Alternatively, call mint()
 #    through Etherscan's UI or a script that handles the CID encoding.
 #
-#    The canonicalCIDString, manifestCIDString, and manifestURI are plain strings:
+#    You also need the manifestContentHash — the keccak256 hash of the
+#    manifest JSON content. Compute it:
+#      npm install js-sha3
+#      node -e "const keccak256 = require('js-sha3').keccak256;
+#               const fs = require('fs');
+#               const buf = fs.readFileSync('manifest.json');
+#               console.log('0x' + keccak256(buf))"
+#
+#    The canonicalCIDString, manifestCIDString, manifestURI, mimeType,
+#    licenceCID, and manifestContentHash fill out the remaining parameters:
 export CONTRACT_ADDRESS=0x...   # from deploy output
 cast send $CONTRACT_ADDRESS \
-  "mint(address,bytes,string,string,string)" \
+  "mint(address,bytes,string,string,string,string,string,bytes32)" \
   0xYourRecipientAddress \
   0x<RAW-CID-HEX> \
   "<YOUR-CID>" \
   "<MANIFEST-CID>" \
   "ipfs://<MANIFEST-CID>" \
+  "image/png" \
+  "<LICENCE-CID>" \
+  0x<MANIFEST-CONTENT-HASH> \
   --private-key $PRIVATE_KEY \
   --rpc-url $RPC_URL
 ```
