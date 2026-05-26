@@ -86,9 +86,14 @@ forge build
 # Run tests
 forge test
 
-# Generate a manifest
+# Add your media file to IPFS and get its CID
+# (example using Kubo; your CID will differ based on your file and import settings)
+ipfs add --cid-version 1 --hash sha2-256 --chunker size-262144 my-artwork.png
+# → added bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi my-artwork.png
+
+# Generate a manifest using the CID you just got
 node scripts/create-manifest.js \
-  --cid bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi \
+  --cid <YOUR-CID> \
   --mime image/png \
   --title "My Work" \
   --artist "Jane Doe" \
