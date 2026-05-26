@@ -198,7 +198,7 @@ forge script script/DeployNFTIntegrity.s.sol --broadcast --rpc-url $RPC_URL
 #    through Etherscan's UI or a script that handles the CID encoding.
 #
 #    You also need the manifestContentHash — the keccak256 hash of the
-#    manifest JSON content. Compute it:
+#    manifest JSON content. Compute it with js-sha3:
 #      npm install js-sha3
 #      node -e "const keccak256 = require('js-sha3').keccak256;
 #               const fs = require('fs');
