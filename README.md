@@ -118,13 +118,12 @@ ipfs add \
 # → added bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi my-artwork.png
 
 # Generate a manifest. Pass the same import settings you used with ipfs add.
-# (The script has no way to know what flags ipfs add used — you tell it.)
+# The script fills in sensible defaults for anything you don't specify.
 node scripts/create-manifest.js \
   --cid <YOUR-CID> \
   --mime image/png \
   --ipfsImport.cidVersion 1 \
   --ipfsImport.hashFunction sha2-256 \
-  --ipfsImport.codec dag-pb \
   --ipfsImport.chunker size-262144 \
   --cid <YOUR-CID> \
   --mime image/png \
