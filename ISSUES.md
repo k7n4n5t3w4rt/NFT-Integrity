@@ -41,7 +41,7 @@ A user who reads the diagram will look for a file that doesn't exist.
 ## Issue 3 — No package.json for Node.js dependency management
 
 - **ID:** 013
-- **STATUS:** open
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/013-add-package-json`
 - **Severity:** DX (Developer Experience)
 - **Files:** (new) `package.json`
