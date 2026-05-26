@@ -36,11 +36,30 @@ The contract (`NFTIntegrity.sol`) stores what must be tamper-proof:
 The [JSON manifest](schemas/integrity-manifest-v1.schema.json) captures everything that doesn't need on-chain consensus:
 
 - **`canonicalMedia`** — CID, MIME type, and the integrity rule
-- **`ipfsImport`** — implementation (`kubo`), CID version, hash function, codec, chunker settings — the reproducible recipe
 - **`retrieval`** — preferred and fallback gateways, HTTP mirrors
 - **`rights`** — licence CID and summary
 - **`governance`** — who can change what, and under what rules
 - **`authorisedDerivatives`** — exhibition copies, thumbnails, format conversions
+
+### The `ipfsImport` section — the reproducible recipe
+
+This is the critical section. It records every setting that went into producing the CID from the original bytes. Anyone with an exact copy of the file who imports it with these same settings will get the identical CID. A different setting *anywhere* in this list produces a different CID.
+
+| Setting | Default |
+|---|---|
+| `implementation` | `kubo` |
+| `implementationVersion` | `0.29.0` |
+| `cidVersion` | `1` |
+| `hashFunction` | `sha2-256` |
+| `codec` | `dag-pb` |
+| `unixfs` | `true` |
+| `rawLeaves` | `true` |
+| `chunker` | `size-262144` |
+| `pin` | `true` |
+| `wrapWithDirectory` | `false` |
+| `nocopy` | `false` |
+| `inline` | `false` |
+| `cidBase` | `base32` |
 
 ### What is updatable on-chain
 
