@@ -115,7 +115,7 @@ ipfs add \
   --hash sha2-256 \
   --chunker size-262144 \
   my-artwork.png
-# → added bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi my-artwork.png
+# → added <YOUR-CID> my-artwork.png
 
 # Generate a manifest. Pass the same import settings you used with ipfs add.
 # The script fills in sensible defaults for anything you don't specify.
