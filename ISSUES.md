@@ -3,7 +3,7 @@
 <!--
   STATUS values: open | in-progress | ready-to-merge | merged
   BRANCH naming: fix/###-short-slug
-  Agents: grep for "STATUS: ready-to-merge" to find the next unclaimed issue.
+  Agents: grep for "STATUS: open" to find the next unclaimed issue.
           Set STATUS to "in-progress", do the work on the listed branch,
           commit, push, then set STATUS to "ready-to-merge" and push again.
 -->
