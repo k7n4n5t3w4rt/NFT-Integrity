@@ -74,8 +74,6 @@ const DEFAULTS = {
       "A retrieved file is valid as the canonical artefact only if it resolves to the canonical IPFS CID when imported using the specified IPFS import settings.",
   },
 
-  authorisedDerivatives: [],
-
 };
 
 // ─── Argument parsing (simple argv walker) ───────────────────────────────

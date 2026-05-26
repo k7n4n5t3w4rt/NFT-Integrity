@@ -13,7 +13,7 @@
 ## Issue 1 — Invalid JSON: trailing comma in schema
 
 - **ID:** 001
-- **STATUS:** ready-to-merge
+- **STATUS:** merged
 - **BRANCH:** `fix/001-schema-trailing-comma`
 - **Severity:** Critical
 - **File:** `schemas/integrity-manifest-v1.schema.json`
@@ -25,7 +25,7 @@
 ## Issue 2 — Invalid JSON: trailing comma in example manifest
 
 - **ID:** 002
-- **STATUS:** ready-to-merge
+- **STATUS:** merged
 - **BRANCH:** `fix/002-example-manifest-trailing-comma`
 - **Severity:** Critical
 - **File:** `schemas/example-manifest.json`
@@ -37,7 +37,7 @@
 ## Issue 3 — README: manifestContentHash labels keccak256 but code computes sha256
 
 - **ID:** 003
-- **STATUS:** ready-to-merge
+- **STATUS:** merged
 - **BRANCH:** `fix/003-readme-hash-docs`
 - **Severity:** Bug
 - **File:** `README.md`
@@ -49,7 +49,7 @@
 ## Issue 4 — Redundant remappings in foundry.toml + remappings.txt
 
 - **ID:** 004
-- **STATUS:** ready-to-merge
+- **STATUS:** merged
 - **BRANCH:** `fix/004-remove-remappings-txt`
 - **Severity:** Config
 - **Files:** `foundry.toml`, `remappings.txt`
@@ -61,7 +61,7 @@
 ## Issue 5 — Dead remapping for @manifoldxyz/libraries-solidity
 
 - **ID:** 005
-- **STATUS:** ready-to-merge
+- **STATUS:** merged
 - **BRANCH:** `fix/005-remove-manifoldxyz-remapping`
 - **Severity:** Config
 - **Files:** `foundry.toml`
@@ -73,7 +73,7 @@
 ## Issue 6 — README: "30 tests" should be "34"
 
 - **ID:** 006
-- **STATUS:** open
+- **STATUS:** merged
 - **BRANCH:** `fix/006-readme-test-count`
 - **Severity:** Docs
 - **File:** `README.md`
@@ -85,7 +85,7 @@
 ## Issue 7 — README step 7: mint cast command missing new params
 
 - **ID:** 007
-- **STATUS:** open
+- **STATUS:** merged
 - **BRANCH:** `fix/007-readme-mint-cast-params`
 - **Severity:** Docs
 - **File:** `README.md`
@@ -97,7 +97,7 @@
 ## Issue 8 — authorisedDerivatives in manifest defaults but missing from schema
 
 - **ID:** 008
-- **STATUS:** open
+- **STATUS:** merged
 - **BRANCH:** `fix/008-manifest-authorised-derivatives`
 - **Severity:** Inconsistency
 - **Files:** `scripts/create-manifest.js`, `schemas/integrity-manifest-v1.schema.json`
@@ -109,7 +109,7 @@
 ## Issue 9 — fallbackGateways type mismatch: string (Solidity) vs array (schema)
 
 - **ID:** 009
-- **STATUS:** open
+- **STATUS:** merged
 - **BRANCH:** `fix/009-fallback-gateways-type`
 - **Severity:** Inconsistency
 - **Files:** `contracts/interfaces/IIntegrityNFT.sol`, `schemas/integrity-manifest-v1.schema.json`, `contracts/NFTIntegrity.sol`
@@ -121,7 +121,7 @@
 ## Issue 10 — renounceOwnership not overridden — can brick admin role
 
 - **ID:** 010
-- **STATUS:** open
+- **STATUS:** merged
 - **BRANCH:** `fix/010-override-renounce-ownership`
 - **Severity:** Low
 - **File:** `contracts/NFTIntegrity.sol`

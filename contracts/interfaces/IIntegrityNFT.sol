@@ -63,7 +63,7 @@ interface IIntegrityNFT is IERC721 {
     }
 
     /// @param preferredGateway Primary IPFS gateway for retrieval.
-    /// @param fallbackGateways Fallback gateways (comma-separated or JSON array).
+    /// @param fallbackGateways Fallback gateway URIs.
     /// @param mirrors          Array of HTTP mirror URIs.
     ///
     /// @dev RetrievalConfig is intentionally contract-level, not per-token.
@@ -72,7 +72,7 @@ interface IIntegrityNFT is IERC721 {
     /// provides content addressing independent of any specific gateway.
     struct RetrievalConfig {
         string   preferredGateway;
-        string   fallbackGateways;
+        string[] fallbackGateways;
         string[] mirrors;
     }
 
@@ -224,7 +224,7 @@ interface IIntegrityNFT is IERC721 {
     /// @notice Update retrieval gateways. Only owner (DEFAULT_ADMIN_ROLE).
     function updateRetrievalConfig(
         string calldata preferredGateway,
-        string calldata fallbackGateways,
+        string[] calldata fallbackGateways,
         string[] calldata mirrors
     ) external;
 }

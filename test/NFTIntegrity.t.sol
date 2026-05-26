@@ -350,23 +350,27 @@ contract NFTIntegrityTest is Test {
     function testRetrievalConfigDefault() public {
         IIntegrityNFT.RetrievalConfig memory rc = nft.retrievalConfig();
         assertEq(rc.preferredGateway, "");
-        assertEq(rc.fallbackGateways, "");
+        assertEq(rc.fallbackGateways.length, 0);
         assertEq(rc.mirrors.length, 0);
     }
 
     function testUpdateRetrievalConfig() public {
         string memory gw = "https://ipfs.io/ipfs/";
-        string memory fb = '["https://dweb.link/ipfs/","https://cf-ipfs.com/ipfs/"]';
+        string[] memory fbs = new string[](2);
+        fbs[0] = "https://dweb.link/ipfs/";
+        fbs[1] = "https://cf-ipfs.com/ipfs/";
         string[] memory mirrors = new string[](2);
         mirrors[0] = "https://mirror1.example/file.png";
         mirrors[1] = "https://mirror2.example/file.png";
 
         vm.prank(admin);
-        nft.updateRetrievalConfig(gw, fb, mirrors);
+        nft.updateRetrievalConfig(gw, fbs, mirrors);
 
         IIntegrityNFT.RetrievalConfig memory rc = nft.retrievalConfig();
         assertEq(rc.preferredGateway, gw);
-        assertEq(rc.fallbackGateways, fb);
+        assertEq(rc.fallbackGateways.length, 2);
+        assertEq(rc.fallbackGateways[0], fbs[0]);
+        assertEq(rc.fallbackGateways[1], fbs[1]);
         assertEq(rc.mirrors.length, 2);
         assertEq(rc.mirrors[0], mirrors[0]);
         assertEq(rc.mirrors[1], mirrors[1]);
@@ -375,7 +379,13 @@ contract NFTIntegrityTest is Test {
     function testUpdateRetrievalConfigRevertsNotOwner() public {
         vm.prank(user);
         vm.expectRevert("Ownable: caller is not the owner");
-        nft.updateRetrievalConfig("gw", "fb", new string[](0));
+        nft.updateRetrievalConfig("gw", new string[](0), new string[](0));
+    }
+
+    function testRenounceOwnershipReverts() public {
+        vm.prank(admin);
+        vm.expectRevert("NFTIntegrity: cannot renounce admin via renounceOwnership - use transferOwnership");
+        nft.renounceOwnership();
     }
 
     // ─── ERC-165 ─────────────────────────────────────────────────────────

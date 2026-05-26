@@ -114,7 +114,7 @@ The contract uses two Solidity dependencies (**OpenZeppelin** and **forge-std**)
 │   └── interfaces/
 │       └── IIntegrityNFT.sol         # Full interface
 ├── test/
-│   └── NFTIntegrity.t.sol           # 30 Foundry tests
+│   └── NFTIntegrity.t.sol           # 34 Foundry tests
 ├── script/
 │   └── DeployNFTIntegrity.s.sol     # Forge deploy script
 ├── schemas/

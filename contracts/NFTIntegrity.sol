@@ -139,6 +139,13 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
         }
     }
 
+    /// @notice Override renounceOwnership to prevent bricking the admin role.
+    ///         renounceRole already guards against renouncing DEFAULT_ADMIN_ROLE;
+    ///         this override applies the same protection to Ownable's renounceOwnership.
+    function renounceOwnership() public view override onlyOwner {
+        revert("NFTIntegrity: cannot renounce admin via renounceOwnership - use transferOwnership");
+    }
+
     // ─── Minting ─────────────────────────────────────────────────────────
 
     /// @inheritdoc IIntegrityNFT
@@ -391,14 +398,18 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
     /// @inheritdoc IIntegrityNFT
     function updateRetrievalConfig(
         string calldata preferredGateway,
-        string calldata fallbackGateways,
+        string[] calldata fallbackGateways,
         string[] calldata mirrors
     )
         external
         onlyOwner
     {
         _retrievalConfig.preferredGateway = preferredGateway;
-        _retrievalConfig.fallbackGateways = fallbackGateways;
+        // Replace fallback gateways array.
+        delete _retrievalConfig.fallbackGateways;
+        for (uint256 i = 0; i < fallbackGateways.length; i++) {
+            _retrievalConfig.fallbackGateways.push(fallbackGateways[i]);
+        }
 
         // Replace mirrors array.
         delete _retrievalConfig.mirrors;
@@ -408,7 +419,7 @@ contract NFTIntegrity is ERC721URIStorage, Ownable, IIntegrityNFT {
 
         emit RetrievalConfigUpdated(
             preferredGateway,
-            bytes(fallbackGateways).length > 0 ? 1 : 0,
+            fallbackGateways.length,
             mirrors.length
         );
     }
