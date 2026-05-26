@@ -13,7 +13,7 @@
 ## Issue 1 — Invalid JSON: trailing comma in schema
 
 - **ID:** 001
-- **STATUS:** ready-to-merge
+- **STATUS:** open
 - **BRANCH:** `fix/001-schema-trailing-comma`
 - **Severity:** Critical
 - **File:** `schemas/integrity-manifest-v1.schema.json`
@@ -25,7 +25,7 @@
 ## Issue 2 — Invalid JSON: trailing comma in example manifest
 
 - **ID:** 002
-- **STATUS:** ready-to-merge
+- **STATUS:** open
 - **BRANCH:** `fix/002-example-manifest-trailing-comma`
 - **Severity:** Critical
 - **File:** `schemas/example-manifest.json`
