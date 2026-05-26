@@ -86,12 +86,22 @@ forge build
 # Run tests
 forge test
 
-# Add your media file to IPFS and get its CID
-# (example using Kubo; your CID will differ based on your file and import settings)
-ipfs add --cid-version 1 --hash sha2-256 --chunker size-262144 my-artwork.png
+# Add your media file to IPFS and get its CID.
+# The flags MUST match the ipfsImport settings in the manifest.
+# Defaults used by the manifest script:
+#   cidVersion=1, hashFunction=sha2-256, codec=dag-pb,
+#   chunker=size-262144, rawLeaves=true
+ipfs add \
+  --cid-version 1 \
+  --hash sha2-256 \
+  --chunker size-262144 \
+  --raw-leaves \
+  my-artwork.png
 # → added bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi my-artwork.png
 
-# Generate a manifest using the CID you just got
+# Generate a manifest using the CID you just got.
+# The script applies the default ipfsImport settings above; override any
+# with dot-path flags, e.g. --ipfsImport.chunker size-1048576
 node scripts/create-manifest.js \
   --cid <YOUR-CID> \
   --mime image/png \
