@@ -13,7 +13,7 @@
 ## Issue 1 — Invalid JSON: trailing comma in schema
 
 - **ID:** 001
-- **STATUS:** open
+- **STATUS:** in-progress
 - **BRANCH:** `fix/001-schema-trailing-comma`
 - **Severity:** Critical
 - **File:** `schemas/integrity-manifest-v1.schema.json`
@@ -37,7 +37,7 @@
 ## Issue 3 — README: manifestContentHash labels keccak256 but code computes sha256
 
 - **ID:** 003
-- **STATUS:** open
+- **STATUS:** in-progress
 - **BRANCH:** `fix/003-readme-hash-docs`
 - **Severity:** Bug
 - **File:** `README.md`
