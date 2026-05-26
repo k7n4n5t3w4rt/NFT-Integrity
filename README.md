@@ -106,10 +106,8 @@ forge build
 forge test
 
 # Add your media file to IPFS and get its CID.
-# The flags MUST match the ipfsImport settings in the manifest.
-# Defaults used by the manifest script:
-#   cidVersion=1, hashFunction=sha2-256, codec=dag-pb,
-#   chunker=size-262144, rawLeaves=true
+# The flags you use here are your import recipe — write them down.
+# They must match what goes into the manifest.
 ipfs add \
   --cid-version 1 \
   --hash sha2-256 \
@@ -118,9 +116,8 @@ ipfs add \
   my-artwork.png
 # → added bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi my-artwork.png
 
-# Generate a manifest using the CID you just got.
-# The script embeds defaults matching the ipfs add flags above;
-# pass them explicitly to lock the recipe into your command:
+# Generate a manifest. Pass the same import settings you used with ipfs add.
+# (The script has no way to know what flags ipfs add used — you tell it.)
 node scripts/create-manifest.js \
   --cid <YOUR-CID> \
   --mime image/png \
