@@ -12,7 +12,7 @@ NFT-Integrity makes the relationship explicit and verifiable:
 
 - Every token is anchored to a **single canonical IPFS CID** that is **immutable** once minted.
 - The contract records the **CID in full** (as `bytes`), not just a URI fragment.
-- **IPFS import settings** are captured off-chain in a structured manifest so anyone can **reproduce the identical CID** from a raw byte copy — even if the content disappears from the IPFS network.
+- **IPFS import settings** are captured off-chain in a structured manifest so anyone with an exact true copy of the original media file can **reproduce the identical CID** — even if the content disappears from the IPFS network.
 - **Gateways and mirrors are mutable retrieval infrastructure.** Updating them does not change the artefact's identity.
 - **Any file producing a different CID is a different artefact.** It must be recorded as an authorised derivative, never silently substituted.
 
