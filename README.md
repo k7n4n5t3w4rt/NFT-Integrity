@@ -192,38 +192,34 @@ forge script script/DeployNFTIntegrity.s.sol --broadcast --rpc-url $RPC_URL
 # → NFTIntegrity deployed at: 0x...
 
 # 7. Mint a token.
-#    The contract's mint() takes the raw binary CID as bytes — you need to
-#    decode the CID string to hex first. One way: use Node.js:
-#      node -e "const {CID} = require('multiformats/cid');
-#               CID.parse('<YOUR-CID>').bytes.then(b =>
-#                 console.log('0x' + Buffer.from(b).toString('hex')))"
+#    Use the mint.js helper script — it reads the manifest, decodes the CID,
+#    computes the keccak256 content hash, and assembles the full cast send
+#    command for you.  No manual hex-encoding or hash calculation needed.
 #
-#    Or encode it with the @ipld/dag-pb tooling. Alternatively, call mint()
-#    through Etherscan's UI or a script that handles the CID encoding.
-#
-#    You also need the manifestContentHash — the keccak256 hash of the
-#    manifest JSON content. Compute it with js-sha3:
-#      npm install js-sha3
-#      node -e "const keccak256 = require('js-sha3').keccak256;
-#               const fs = require('fs');
-#               const buf = fs.readFileSync('manifest.json');
-#               console.log('0x' + keccak256(buf))"
-#
-#    The canonicalCIDString, manifestCIDString, manifestURI, mimeType,
-#    licenceCID, and manifestContentHash fill out the remaining parameters:
+#    Set these env vars (or pass them as flags):
+#      RECIPIENT       — address that receives the minted token
+#      CONTRACT_ADDRESS — NFTIntegrity contract address (from deploy output)
+#      MANIFEST_CID    — IPFS CID of the manifest JSON (from step 5)
+export RECIPIENT=0xYourRecipient
 export CONTRACT_ADDRESS=0x...   # from deploy output
-cast send $CONTRACT_ADDRESS \
-  "mint(address,bytes,string,string,string,string,string,bytes32)" \
-  0xYourRecipientAddress \
-  0x<RAW-CID-HEX> \
-  "<YOUR-CID>" \
-  "<MANIFEST-CID>" \
-  "ipfs://<MANIFEST-CID>" \
-  "image/png" \
-  "<LICENCE-CID>" \
-  0x<MANIFEST-CONTENT-HASH> \
+export MANIFEST_CID=<MANIFEST-CID>   # from step 5
+
+#    Dry-run first to inspect the command:
+node scripts/mint.js manifest.json \
+  --to $RECIPIENT \
+  --contract $CONTRACT_ADDRESS \
+  --manifest-cid $MANIFEST_CID \
+  --rpc-url $RPC_URL \
   --private-key $PRIVATE_KEY \
-  --rpc-url $RPC_URL
+  --dry-run
+
+#    When you're ready, remove --dry-run to execute:
+node scripts/mint.js manifest.json \
+  --to $RECIPIENT \
+  --contract $CONTRACT_ADDRESS \
+  --manifest-cid $MANIFEST_CID \
+  --rpc-url $RPC_URL \
+  --private-key $PRIVATE_KEY
 ```
 
 ## What this is not
