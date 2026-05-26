@@ -24,7 +24,7 @@
 ## Issue 2 — README references deleted remappings.txt
 
 - **ID:** 012
-- **STATUS:** in-progress
+- **STATUS:** ready-to-merge
 - **BRANCH:** `fix/012-readme-remove-remappings-txt-ref`
 - **Severity:** Docs
 - **File:** `README.md`
