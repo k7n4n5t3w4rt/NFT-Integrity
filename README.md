@@ -32,6 +32,10 @@ The contract (`NFTIntegrity.sol`) stores what must be tamper-proof:
 | Gateways & mirrors | `RetrievalConfig` struct — updatable by owner without affecting identity |
 | Governance | Role-based: `MINTER_ROLE`, `MANIFEST_UPDATER_ROLE`, `DERIVATIVE_MANAGER_ROLE`, owner as `DEFAULT_ADMIN_ROLE` |
 
+> **Note on roles:** Each role maps to exactly one address. Granting a role to a
+> new address automatically removes it from the previous holder — there is no
+> multi-holder support and no separate revocation step.
+
 ### Off-chain (manifest)
 
 The [JSON manifest](schemas/integrity-manifest-v1.schema.json) captures everything that doesn't need on-chain consensus:
