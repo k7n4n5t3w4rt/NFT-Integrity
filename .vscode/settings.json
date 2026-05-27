@@ -17,14 +17,11 @@
   },
   "solidity.packageDefaultDependenciesDirectory": "lib",
   "solidity.packageDefaultDependenciesContractsDirectory": "contracts",
-  "solidity.remappingsUnix": [
-    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
-    "@openzeppelin/contracts-upgradeable/=lib/@openzeppelin/contracts-upgradeable/",
-    "@manifoldxyz/libraries-solidity/=lib/@manifoldxyz/libraries-solidity/"
-  ],
   "solidity.remappings": [
     "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
     "@openzeppelin/contracts-upgradeable/=lib/@openzeppelin/contracts-upgradeable/",
-    "@manifoldxyz/libraries-solidity/=lib/@manifoldxyz/libraries-solidity/"
+    "@manifoldxyz/=lib/@manifoldxyz/",
+    "forge-std/=lib/forge-std/src/",
+    "ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/"
   ]
 }
