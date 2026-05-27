@@ -13,6 +13,8 @@
   "remoteEnv": {
     "SSH_AUTH_SOCK": "/ssh-agent"
   },
+  "postStartCommand": "ngircd -f /etc/ngircd/ngircd.conf || true",
+
   "customizations": {
     "vscode": {
       "extensions": [

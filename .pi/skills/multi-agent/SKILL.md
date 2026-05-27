@@ -40,6 +40,53 @@ Or define agents inline:
 3. Agents run in parallel with isolated filesystems — no conflicts
 4. When agents finish, review their branches and merge or cherry-pick useful changes
 
+## Agent Coordination via Chat
+
+Agents can talk to each other in real-time using the **agent-chat** extension. This is an IRC-like chat server that spins up automatically with pi and lets agents coordinate across tmux windows.
+
+### Setup (once, already done if extension is installed)
+
+The `agent-chat` extension lives at `~/.pi/agent/extensions/agent-chat/` and auto-loads with pi. It starts a lightweight chat server on `127.0.0.1:9999` and connects each agent automatically.
+
+### Tools agents can call
+
+| Tool | Description |
+|---|---|
+| `chat_send(message, channel?)` | Broadcast a message (default channel: `#general`) |
+| `chat_read(count?, channel?)` | Read the last N buffered messages |
+
+### Example: agents coordinating
+
+```
+Agent A (architecture):
+  chat_send("Architecture notes done — using factory pattern for token creation")
+
+Agent B (implementation):
+  chat_read(count=5)
+  → "4. <pi-arch> Architecture notes done — using factory pattern for token creation"
+  chat_send("Got it, implementing factory pattern now")
+
+Agent C (tests):
+  chat_read()
+  → sees both messages, knows implementation is in progress
+  chat_send("I'll start writing tests for the factory")
+```
+
+### Commands for humans
+
+| Command | Description |
+|---|---|
+| `/chat [nick]` | Open an interactive chat client in a new tmux window |
+| `/chat-nick [name]` | Set your agent's chat nickname |
+
+### Coordination patterns
+
+- **Announce milestones**: each agent sends a `chat_send` when it finishes a phase so others can react
+- **Request help**: an agent stuck on something can `chat_send` a question and other agents can respond
+- **Status polling**: agents call `chat_read()` periodically to check for updates from siblings
+
+Agents should keep chat messages brief and actionable — think one-line status updates, not full reports (use shared files like `notes/` for detailed output).
+
 ## Merging Results
 
 ```bash

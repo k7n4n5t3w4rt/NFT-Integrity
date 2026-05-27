@@ -15,6 +15,9 @@ RUN apt-get update && apt-get install -y \
     ripgrep \
     fd-find \
     vim \
+    netcat-openbsd \
+    ngircd \
+    irssi \
     && ln -s /usr/bin/fdfind /usr/local/bin/fd \
     && rm -rf /var/lib/apt/lists/*
 
@@ -40,5 +43,9 @@ RUN curl -L https://foundry.paradigm.xyz | bash \
     && /root/.foundry/bin/foundryup
 
 ENV PATH="/root/.foundry/bin:$PATH"
+
+# Configure ngircd for agent coordination chat
+RUN mkdir -p /var/run/ngircd && chown nobody:nogroup /var/run/ngircd
+COPY ngircd.conf /etc/ngircd/ngircd.conf
 
 WORKDIR /workspaces/nft-contract
