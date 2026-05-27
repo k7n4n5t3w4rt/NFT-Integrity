@@ -37,6 +37,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 # Install pi globally
 RUN npm install -g @earendil-works/pi-coding-agent
 
+# Clone pi configuration repo to ~/.pi (overwrites any default config)
+# Uses HTTPS for build-time access (no SSH key needed)
+RUN git clone --depth 1 https://github.com/k7n4n5t3w4rt/pi.git /root/.pi
+
 # Install Foundry for Solidity development
 ENV HOME=/root
 RUN curl -L https://foundry.paradigm.xyz | bash \
