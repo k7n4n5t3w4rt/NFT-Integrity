@@ -13,6 +13,7 @@ NICK = "pi-agent"
 CHANNEL = "#general"
 FIFO = "/tmp/irc-bot.fifo"
 INBOX = "/tmp/irc-inbox.jsonl"
+LAST_SEEN = "/tmp/irc-ext-last-id"
 
 def setup():
     if os.path.exists(FIFO):
@@ -21,6 +22,10 @@ def setup():
     # Clear inbox
     with open(INBOX, "w") as f:
         f.write("")
+    # Reset extension last-seen counters so both observer and driver pick up new messages
+    for f in [LAST_SEEN, "/tmp/irc-ext-last-id-observer"]:
+        if os.path.exists(f):
+            os.unlink(f)
 
 MAX_LINE = 400  # stay under 512 IRC limit
 
@@ -112,6 +117,9 @@ def main():
                             os.close(fifo_fd)
                             os.unlink(FIFO)
                             return
+                        elif msg.startswith("/nick "):
+                            new_nick = msg[6:].strip()
+                            send(sock, f"NICK {new_nick}")
                         elif msg.startswith("/msg "):
                             _send_chunked(sock, msg[5:])
                         elif msg.startswith("/raw "):
