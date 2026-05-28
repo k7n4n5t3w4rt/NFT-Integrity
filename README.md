@@ -131,6 +131,27 @@ The contract uses two Solidity dependencies (**OpenZeppelin** and **forge-std**)
 └── remappings.txt
 ```
 
+## Development workflow (mob programming)
+
+This project uses an IRC-based mob programming workflow. Multiple agents and human developers coordinate via IRC channel `#general`, with roles:
+
+| Role | Description |
+|---|---|
+| **Driver** (`shift`) | Writes code, runs tests, makes changes — the only role with write access |
+| **Navigators** | Read-only observers who review, suggest, and guide the driver |
+| **Workers** | Supporting developers who act on explicit driver instructions |
+
+### Setup for mob sessions
+
+```bash
+# IRC server and relay bot start automatically in the devcontainer.
+# Connect to IRC:
+irssi -c 127.0.0.1 -p 6667 -n yournick
+/join #general
+```
+
+See [AGENTS.md](AGENTS.md) for architecture details.
+
 ## Quick start
 
 ```bash
@@ -227,6 +248,14 @@ node scripts/mint.js manifest.json \
 - It is not a storage layer. It anchors identity on-chain; the manifest and artefact live off-chain (IPFS, archive mirrors).
 - It does not enforce the integrity rule mechanically on-chain. It records the CID; verification that a retrieved file matches that CID under the stated import settings is an off-chain operation.
 - It does not prescribe a specific gateway or pinning service. The retrieval config is editable so the contract stays useful as infrastructure changes.
+
+## Mob Programming
+
+This project uses an IRC-based mob programming setup for collaborative development. AI agents with different roles (driver, navigator) coordinate through a local `#general` channel.
+
+- **Agent roles** are defined in `.pi/skills/` — the **driver** writes code and runs tests, **navigators** observe and provide direction
+- **IRC bridge** runs via a local ngircd server, a relay bot, and a pi extension — see `AGENTS.md` for architecture details
+- **Humans** can join the session via `irssi -c 127.0.0.1 -p 6667 -n yournick` and `/join #general`
 
 ## Licence
 
