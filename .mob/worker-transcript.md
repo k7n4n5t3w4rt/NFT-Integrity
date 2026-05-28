@@ -1763,3 +1763,88 @@ Tool call `bash` (`call_00_8mBwKXdzRTF8vBq1PU1v6461`):
 
 ---
 
+#### ✅ Tool result: `bash` (call `call_00_8mBwKXdzRTF8vBq1PU1v6461`) — 2026-05-28 12:44:06
+
+```
+On branch main
+Your branch is ahead of 'origin/main' by 4 commits.
+  (use "git push" to publish your local commits)
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   .mob/worker-transcript.md
+	new file:   .pi/extensions/worker-transcript-logger.ts
+	modified:   .pi/skills/mob-driver/SKILL.md
+	modified:   .pi/skills/mob-navigator/SKILL.md
+	new file:   .pi/skills/mob-worker/SKILL.md
+	modified:   AGENTS.md
+	modified:   README.md
+	modified:   scripts/irc-bot.py
+
+
+```
+
+### 🤖 Assistant (turn 29) — 2026-05-28 12:44:13
+
+<details><summary>💭 Thinking...</summary>
+
+Good, everything is staged. Now let me commit with a nice descriptive message.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_Tn1i0XpFPxZrShg30j1Y4720`):
+
+```json
+{
+  "command": "cd /workspaces/nft-contract && git commit -m \"feat: complete mob programming setup — silent worker, transcript logging, three-role architecture\n\n- Add mob-worker skill: silent worker that waits for driver delegation,\n  commits changes, and signals completion via /tmp/worker-irc-signal\n- Add worker-transcript-logger extension: real-time markdown transcript\n  of worker thinking, tool calls, and results at .mob/worker-transcript.md\n- Update mob-driver skill: driver is now a pure relay/conduit that\n  delegates tasks and monitors via transcript + git diff, never writes code\n- Update mob-navigator skill: navigators use transcript for ground-truth\n  verification since the worker is silent on IRC\n- Document silent worker information flow in AGENTS.md with architecture\n  diagram and gated done-signal mechanism\n- Clarify three-role mob structure in README: navigators (brains),\n  driver (relay), worker (writes code)\n- Refactor irc-bot.py: generalize from kynan-only to any sender,\n  add self-echo filtering, nick tracking, and self-relay to inbox\""
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_Tn1i0XpFPxZrShg30j1Y4720`) — 2026-05-28 12:44:13
+
+```
+[main 75c32db] feat: complete mob programming setup — silent worker, transcript logging, three-role architecture
+ 8 files changed, 2179 insertions(+), 24 deletions(-)
+ create mode 100644 .mob/worker-transcript.md
+ create mode 100644 .pi/extensions/worker-transcript-logger.ts
+ create mode 100644 .pi/skills/mob-worker/SKILL.md
+
+```
+
+### 🤖 Assistant (turn 27) — 2026-05-28 12:44:13
+
+<details><summary>💭 Thinking...</summary>
+
+Alright, I have a good picture of the changes. Let me now stage everything and commit with a nice descriptive message. The changes are:
+
+1. **New: `.mob/worker-transcript.md`** — Live transcript log of worker thinking, tool calls, results
+2. **New: `.pi/extensions/worker-transcript-logger.ts`** — Pi extension that writes the transcript in real-time markdown
+3. **New: `.pi/skills/mob-worker/SKILL.md`** — Worker skill definition (silent, awareness-only handling, gated done signal)
+4. **Modified: `.pi/skills/mob-driver/SKILL.md`** — Updated driver cycle to include MONITOR step, transcript/git-diff based verification, silent worker documentation
+5. **Modified: `.pi/skills/mob-navigator/SKILL.md`** — Updated navigator to use transcript and git diff for monitoring
+6. **Modified: `AGENTS.md`** — Added silent worker info flow diagram, updated PI_IRC_WORKER docs with gated signal
+7. **Modified: `README.md`** — Updated role descriptions (navigators as brains, driver as pure relay, worker as implementer)
+8. **Modified: `scripts/irc-bot.py`** — Multi-sender PRIVMSG support, self-echo filtering, nick tracking, self-relay of FIFO messages to inbox
+
+Let me stage and commit.
+
+</details>
+
+Good, I've reviewed all changes. Now staging everything and committing.
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_Tb47GdOnA815b7YODkhX0870`):
+
+```json
+{
+  "command": "cd /workspaces/nft-contract && git add -A && git commit -m \"feat: silent worker with transcript-based monitoring\n\nMob programming infrastructure overhaul — the worker agent is now\ncompletely silent on IRC with all monitoring done via transcript log\nand git diff.\n\nNew files:\n- .pi/skills/mob-worker/SKILL.md: Worker skill with silent IRC policy,\n  awareness-only message handling, and gated done signal\n- .pi/extensions/worker-transcript-logger.ts: Pi extension that writes\n  real-time markdown transcript of worker thinking, tool calls, results\n- .mob/worker-transcript.md: Live transcript log\n\nUpdated skills:\n- mob-driver: Added MONITOR step to driver cycle, transcript/git-diff\n  based verification workflow, silent worker documentation\n- mob-navigator: Added transcript monitoring loop, git diff review\n  protocol for verifying worker output\n\nUpdated docs:\n- AGENTS.md: Silent worker info flow diagram, gated signal docs,\n  updated PI_IRC_WORKER description\n- README.md: Reordered role descriptions (navigators as brains,\n  driver as relay, worker as implementer)\n\nUpdated IRC bot:\n- scripts/irc-bot.py: Multi-sender PRIVMSG matching, self-echo\n  filtering, nick change tracking, self-relay of FIFO messages to\n  inbox for worker visibility\""
+}
+```
+
+---
+
