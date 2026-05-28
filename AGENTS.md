@@ -34,9 +34,34 @@ The devcontainer automatically starts ngircd and the relay bot via `postStartCom
 
 IRC #general is intended as a coordination channel for multi-agent mob programming — different agents with different roles (dev, review, test) all in one channel.
 
+### Information Flow (Silent Worker)
+
+The worker agent is **silent on IRC** — it does not broadcast thinking, tool calls, or responses. The driver and navigators get information about the worker's activity exclusively through:
+
+1. **Transcript log:** `.mob/worker-transcript.md` — a real-time markdown log of the worker's thinking, tool calls, and results (written by `worker-transcript-logger.ts`)
+2. **Git diff:** `git diff HEAD~1` — shows what code the worker actually changed, after they commit
+
+```
+Driver/Navigator                    Worker (silent)
+     │                                    │
+     ├── IRC: "worker, please..." ────────► reads inbox
+     │                                    │
+     │                              works silently
+     │                              commits changes
+     │                                    │
+     ◄── tail .mob/worker-transcript.md ──┤ (real-time log)
+     ◄── git diff HEAD~1 ────────────────┤ (after commit)
+     │                                    │
+     ├── IRC: "Done — [summary]" ────────► (driver reports to mob)
+```
+
 ### PI_IRC_WORKER
 
-The IRC bridge extension supports a worker mode (`PI_IRC_WORKER=true`) where it listens to all IRC messages but only acts on instructions from the driver ("shift"). Messages from others are awareness-only context. The worker still relays its responses back to IRC.
+The IRC bridge extension supports a worker mode (`PI_IRC_WORKER=true`):
+- Reads incoming IRC messages from the driver ("shift") as task instructions
+- Non-driver messages are injected as awareness-only ("FYI") context
+- **Never echoes responses back to IRC** — thinking, tool calls, and text are all silent
+- **One gated output:** worker writes to `/tmp/worker-irc-signal` to send a "done" ping. The extension picks it up, prefixes `WORKER:`, relays to IRC, and deletes the file. This is the only way the worker speaks on IRC.
 
 ## Tmux Session Layout
 

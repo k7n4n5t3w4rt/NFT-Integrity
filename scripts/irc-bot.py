@@ -6,6 +6,7 @@ import time
 import os
 import select
 import json
+import re
 
 SERVER = "127.0.0.1"
 PORT = 6667
@@ -23,7 +24,7 @@ def setup():
     with open(INBOX, "w") as f:
         f.write("")
     # Reset extension last-seen counters so both observer and driver pick up new messages
-    for f in [LAST_SEEN, "/tmp/irc-ext-last-id-observer"]:
+    for f in [LAST_SEEN, "/tmp/irc-ext-last-id-worker"]:
         if os.path.exists(f):
             os.unlink(f)
 
@@ -67,6 +68,7 @@ def main():
     buf = b""
     last_seen_id = 0
     msg_counter = 0
+    current_nick = NICK  # track nick changes for inbox entries
     
     while True:
         readable, _, _ = select.select([sock_fd, fifo_fd], [], [], 0.3)
@@ -88,15 +90,19 @@ def main():
                         send(sock, f"PONG {line[5:]}")
                         continue
                     
-                    # Check for PRIVMSG from kynan to #general
-                    trigger = f"kynan!~root@127.0.0.1 PRIVMSG {CHANNEL} :"
-                    if trigger in line:
-                        msg_start = line.find(trigger) + len(trigger)
-                        content = line[msg_start:]
+                    # Match any PRIVMSG to #general from any sender
+                    m = re.match(r":([^!]+)![^ ]+ PRIVMSG " + re.escape(CHANNEL) + r" :(.+)", line)
+                    if m:
+                        sender = m.group(1)
+                        content = m.group(2)
+                        # Skip echo of our own messages (ngircd reflects them back).
+                        # Our own sent messages are already written to inbox from the FIFO handler.
+                        if sender.lower() == current_nick.lower():
+                            continue
                         msg_counter += 1
                         entry = json.dumps({
                             "id": msg_counter,
-                            "from": "kynan",
+                            "from": sender,
                             "msg": content,
                             "time": time.strftime("%H:%M:%S")
                         })
@@ -119,13 +125,37 @@ def main():
                             return
                         elif msg.startswith("/nick "):
                             new_nick = msg[6:].strip()
+                            current_nick = new_nick
                             send(sock, f"NICK {new_nick}")
                         elif msg.startswith("/msg "):
                             _send_chunked(sock, msg[5:])
+                            # Also write to inbox so the worker sees it
+                            if not msg.startswith("WORKER:"):
+                                msg_counter += 1
+                                entry = json.dumps({
+                                    "id": msg_counter,
+                                    "from": current_nick,
+                                    "msg": msg[5:],
+                                    "time": time.strftime("%H:%M:%S")
+                                })
+                                with open(INBOX, "a") as f:
+                                    f.write(entry + "\n")
                         elif msg.startswith("/raw "):
                             send(sock, msg[5:])
                         else:
                             _send_chunked(sock, msg)
+                            # Also write to inbox so the worker sees it
+                            # Skip worker's own messages to prevent loops
+                            if not msg.startswith("WORKER:"):
+                                msg_counter += 1
+                                entry = json.dumps({
+                                    "id": msg_counter,
+                                    "from": current_nick,
+                                    "msg": msg,
+                                    "time": time.strftime("%H:%M:%S")
+                                })
+                                with open(INBOX, "a") as f:
+                                    f.write(entry + "\n")
                 except BlockingIOError:
                     pass
 

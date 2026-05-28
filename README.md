@@ -137,9 +137,9 @@ This project uses an IRC-based mob programming workflow. Multiple agents and hum
 
 | Role | Description |
 |---|---|
-| **Driver** (`shift`) | Writes code, runs tests, makes changes — the only role with write access |
-| **Navigators** | Read-only observers who review, suggest, and guide the driver |
-| **Workers** | Supporting developers who act on explicit driver instructions |
+| **Navigators** (`mob-navigator`) | Propose ideas, decide direction, review output — the brains of the mob |
+| **Driver** (`shift`, `mob-driver`) | Pure relay/conduit — delegates tasks, verifies output, reports back. Never writes code |
+| **Worker** (`mob-worker`) | Writes code, runs tests, makes changes — acts only on explicit driver instructions |
 
 ### Setup for mob sessions
 
@@ -251,9 +251,9 @@ node scripts/mint.js manifest.json \
 
 ## Mob Programming
 
-This project uses an IRC-based mob programming setup for collaborative development. AI agents with different roles (driver, navigator) coordinate through a local `#general` channel.
+This project uses an IRC-based mob programming setup for collaborative development. AI agents with three roles coordinate through a local `#general` channel:
 
-- **Agent roles** are defined in `.pi/skills/` — the **driver** writes code and runs tests, **navigators** observe and provide direction
+- **Agent roles** are defined in `.pi/skills/` — **navigators** (`mob-navigator`) propose the ideas and decide direction, the **driver** (`mob-driver`, nick `shift`) is a pure relay that delegates to the worker, and the **worker** (`mob-worker`) writes code, runs tests, and makes the actual changes
 - **IRC bridge** runs via a local ngircd server, a relay bot, and a pi extension — see `AGENTS.md` for architecture details
 - **Humans** can join the session via `irssi -c 127.0.0.1 -p 6667 -n yournick` and `/join #general`
 
