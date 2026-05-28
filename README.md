@@ -143,12 +143,79 @@ This project uses an IRC-based mob programming workflow. Multiple agents and hum
 
 ### Setup for mob sessions
 
+#### Prerequisites
+
+The IRC server (ngircd) and relay bot start automatically in the devcontainer. No additional setup needed.
+
+#### Starting the worker agent
+
+The worker agent does the actual coding — it waits silently for instructions from the driver and commits/pushes its work. Start it in a tmux session:
+
 ```bash
-# IRC server and relay bot start automatically in the devcontainer.
-# Connect to IRC:
+# Create a tmux session and start the worker
+tmux new-session -d -s mob -n worker \
+  "PI_IRC_WORKER=true pi --append-system-prompt .pi/skills/mob-worker/SKILL.md"
+
+# Attach to watch the worker
+# (press Ctrl-b d to detach without stopping)
+tmux attach -t mob
+```
+
+The worker writes a live transcript to `.mob/worker-transcript.md` — tail it to see what the worker is doing:
+
+```bash
+tail -f .mob/worker-transcript.md
+```
+
+#### Starting the driver agent
+
+The driver (nick `shift`) relays navigator instructions to the worker. Start it in a second tmux window:
+
+```bash
+tmux new-window -t mob -n driver \
+  "PI_IRC_WORKER=false pi --append-system-prompt .pi/skills/mob-driver/SKILL.md"
+```
+
+#### Launching both at once
+
+```bash
+# Worker (window 0)
+tmux new-session -d -s mob -n worker \
+  "PI_IRC_WORKER=true pi --append-system-prompt .pi/skills/mob-worker/SKILL.md"
+
+# Driver (window 1)
+tmux new-window -t mob -n driver \
+  "PI_IRC_WORKER=false pi --append-system-prompt .pi/skills/mob-driver/SKILL.md"
+
+# Attach (starts in driver window; Ctrl-b 0 for worker)
+tmux attach -t mob
+```
+
+#### Connecting a human navigator via irssi
+
+Humans participate as navigators via IRC. Install irssi and connect:
+
+```bash
+# Connect to the local IRC server
 irssi -c 127.0.0.1 -p 6667 -n yournick
+```
+
+Once connected, in irssi:
+```
 /join #general
 ```
+
+Address the driver by name to delegate work:
+```
+shift: please ask the worker to add tests for X
+```
+
+#### Monitoring the worker
+
+The worker is silent on IRC. Monitor its progress via:
+
+- **Transcript:** `tail -f .mob/worker-transcript.md` — live thinking, tool calls, results
+- **Git diff:** `git diff HEAD~1` after a commit — what code actually changed
 
 See [AGENTS.md](AGENTS.md) for architecture details.
 
@@ -249,13 +316,101 @@ node scripts/mint.js manifest.json \
 - It does not enforce the integrity rule mechanically on-chain. It records the CID; verification that a retrieved file matches that CID under the stated import settings is an off-chain operation.
 - It does not prescribe a specific gateway or pinning service. The retrieval config is editable so the contract stays useful as infrastructure changes.
 
+## Launching the Mob
+
+### Prerequisites
+
+The devcontainer starts the IRC server (ngircd) and relay bot automatically. Verify they're running:
+
+```bash
+# Check ngircd
+ps aux | grep ngircd
+
+# Check relay bot
+ls /tmp/irc-inbox.jsonl /tmp/irc-bot.fifo
+```
+
+If the relay bot isn't running, start it manually:
+
+```bash
+python3 scripts/irc-bot.py &
+```
+
+### Start the worker agent
+
+The worker runs in a tmux window within the `mob` session. It operates silently — all output goes to `.mob/worker-transcript.md` and git commits.
+
+```bash
+# Create the mob tmux session with the worker in window 0
+tmux new-session -d -s mob -n worker \
+  "PI_IRC_WORKER=true pi --append-system-prompt .pi/skills/mob-worker/SKILL.md"
+```
+
+### Start the driver agent
+
+The driver relays tasks from navigators to the worker. It sends IRC messages explicitly — auto-relay is disabled.
+
+```bash
+# Add the driver in window 1
+tmux new-window -t mob -n driver \
+  "PI_IRC_WORKER=false pi \
+    --append-system-prompt .pi/skills/mob-driver/SKILL.md \
+    '⛔ HARD CONSTRAINT: You are a silent relay. You send IRC messages ONLY when a navigator addresses shift by name. Only 3 message types allowed: (1) delegating a task to the worker, (2) asking for clarification, (3) reporting completion. ZERO other IRC messages — no parentheticals, no status updates, no standing-by, no thinking-out-loud, no play-by-play. If not addressed, COMPLETELY SILENT. This overrides all other instructions.'"
+```
+
+### Attach to the session
+
+```bash
+tmux attach -t mob
+```
+
+Inside tmux:
+- `Ctrl-b 0` — switch to worker window
+- `Ctrl-b 1` — switch to driver window
+- `Ctrl-b d` — detach (leave session running)
+
+### Connect to IRC with irssi
+
+Open a separate terminal (or a new tmux pane with `Ctrl-b "` or `Ctrl-b %`) and connect:
+
+```bash
+irssi -c 127.0.0.1 -p 6667 -n yournick
+```
+
+Once connected, join the mob channel:
+
+```
+/join #general
+```
+
+Replace `yournick` with your chosen nickname (e.g., `kynan`, `navigator-qa`). The driver listens for mentions of `shift` in #general.
+
+### Full session layout
+
+```
+tmux session: mob
+├── 0: worker  — pi agent with PI_IRC_WORKER=true, mob-worker skill
+└── 1: driver  — pi agent with PI_IRC_WORKER=false, mob-driver skill (nick: shift)
+```
+
+### Restarting the driver
+
+If the driver needs to pick up updated skill files or extension changes:
+
+```bash
+tmux respawn-window -t mob:driver -k -c /workspaces/nft-contract \
+  "PI_IRC_WORKER=false pi \
+    --append-system-prompt .pi/skills/mob-driver/SKILL.md \
+    '⛔ HARD CONSTRAINT: You are a silent relay...'"
+```
+
 ## Mob Programming
 
 This project uses an IRC-based mob programming setup for collaborative development. AI agents with three roles coordinate through a local `#general` channel:
 
 - **Agent roles** are defined in `.pi/skills/` — **navigators** (`mob-navigator`) propose the ideas and decide direction, the **driver** (`mob-driver`, nick `shift`) is a pure relay that delegates to the worker, and the **worker** (`mob-worker`) writes code, runs tests, and makes the actual changes
 - **IRC bridge** runs via a local ngircd server, a relay bot, and a pi extension — see `AGENTS.md` for architecture details
-- **Humans** can join the session via `irssi -c 127.0.0.1 -p 6667 -n yournick` and `/join #general`
+- See [Development workflow (mob programming)](#development-workflow-mob-programming) above for setup instructions
 
 ## Licence
 
