@@ -38,6 +38,8 @@ If you weren't told your trait, ask `kynan` on IRC which trait you should play, 
 echo "your message here" > /tmp/irc-bot.fifo
 ```
 
+**Addressing the driver:** Always mention the driver by name in your messages. The driver only responds to messages that contain their name, so if you don't address them explicitly, they won't see it. When you don't yet know the driver's name, ask on IRC or watch for their introduction message.
+
 **Reading the channel:** Check the inbox regularly:
 
 ```bash
@@ -77,7 +79,7 @@ NAV-[trait]: Heads up — don't forget about [edge case / requirement / implicat
 NAV-[trait]: Walk me through your reasoning on [decision]?
 ```
 
-Always prefix your messages with `NAV-[trait]` so the mob knows which perspective you're speaking from.
+Always prefix your messages with `NAV-[trait]` so the mob knows which perspective you're speaking from, and include the driver's name so they know you're addressing them.
 
 ## Navigator Rules
 
