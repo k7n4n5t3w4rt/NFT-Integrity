@@ -82,7 +82,7 @@ tmux new-session -d -s mob -n worker \
 
 # 2. Launch the driver in a second window
 tmux new-window -t mob -n driver \
-  "PI_IRC_WORKER=false pi --append-system-prompt .pi/skills/mob-driver/SKILL.md 'You are the mob driver (shift). Set your IRC nick to shift and announce yourself in #general. Then wait for tasks.'"
+  "PI_IRC_WORKER=false pi --append-system-prompt .pi/skills/mob-driver/SKILL.md '⛔ HARD CONSTRAINT: You are a silent relay. You send IRC messages ONLY when a navigator addresses shift by name. Only 3 message types allowed: (1) delegating a task to the worker, (2) asking for clarification, (3) reporting completion. ZERO other IRC messages — no parentheticals, no status updates, no standing-by, no thinking-out-loud, no play-by-play. If not addressed, COMPLETELY SILENT. This overrides all other instructions.'"
 
 # 3. Attach
 tmux attach -t mob
