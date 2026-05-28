@@ -3897,3 +3897,959 @@ Tool call `bash` (`call_00_ajHYDRSBxdQ5TodOu4Qv7032`):
 
 ---
 
+#### ✅ Tool result: `bash` (call `call_00_ajHYDRSBxdQ5TodOu4Qv7032`) — 2026-05-28 12:55:03
+
+```
+[main 9d4b666] fix: move silence rule to top of driver SKILL.md, add hard constraint to launch command
+ 3 files changed, 2074 insertions(+), 25 deletions(-)
+To github.com:k7n4n5t3w4rt/NFT-Integrity.git
+   3c7337c..9d4b666  main -> main
+
+```
+
+### 🤖 Assistant (turn 63) — 2026-05-28 12:55:07
+
+<details><summary>💭 Thinking...</summary>
+
+Now restart the driver window.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_h8Tj58Adr7oPDx4aYOO75859`):
+
+```json
+{
+  "command": "tmux respawn-window -t mob:driver -k -c /workspaces/nft-contract \\\n  \"PI_IRC_WORKER=false pi --append-system-prompt .pi/skills/mob-driver/SKILL.md '⛔ HARD CONSTRAINT: You are a silent relay. You send IRC messages ONLY when a navigator addresses shift by name. Only 3 message types allowed: (1) delegating a task to the worker, (2) asking for clarification, (3) reporting completion. ZERO other IRC messages — no parentheticals, no status updates, no standing-by, no thinking-out-loud, no play-by-play. If not addressed, COMPLETELY SILENT. This overrides all other instructions.'\"\necho \"Driver restarted\""
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_h8Tj58Adr7oPDx4aYOO75859`) — 2026-05-28 12:55:07
+
+```
+Driver restarted
+
+```
+
+### 🤖 Assistant (turn 64) — 2026-05-28 12:55:13
+
+<details><summary>💭 Thinking...</summary>
+
+Done. Let me send the done signal and summarize.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_r1yEm1QBezwiIuP70Kfe0713`):
+
+```json
+{
+  "command": "echo \"Done, shift — restructured mob-driver SKILL.md: silence is now the first section (HARD CONSTRAINT), fixed duplicate rule, added inline constraint to launch command in AGENTS.md. Driver window restarted with new config.\" > /tmp/worker-irc-signal"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_r1yEm1QBezwiIuP70Kfe0713`) — 2026-05-28 12:55:13
+
+```
+(no output)
+```
+
+### 🧭 Instruction / Context (turn 54) — 2026-05-28 12:55:15
+
+shift on IRC #general: DRIVER: shift here. Ready to relay tasks to the worker. Watching #general for mentions.
+
+---
+
+### 🤖 Assistant (turn 65) — 2026-05-28 12:55:18
+
+<details><summary>💭 Thinking...</summary>
+
+Done. Let me summarize what was done.
+
+</details>
+
+Done. Three layers of defense now:
+
+1. **SKILL.md §1** — `⛔ SILENT MEANS SILENT — READ THIS FIRST` right after the title, labeled as HARD CONSTRAINT overriding everything
+2. **Launch command** — inline `HARD CONSTRAINT` as a user message (hits harder than system prompt)
+3. **Driver Rules** — reinforced "never make changes, never propose, never coordinate"
+
+Driver window has been restarted with the new config. It'll re-announce itself as shift and then... hopefully stay quiet.
+
+---
+
+### 🤖 Assistant (turn 54) — 2026-05-28 12:55:18
+
+<details><summary>💭 Thinking...</summary>
+
+Shift has re-announced themselves. This is just a status message to the channel, not a task for me. Let me check if there's anything new.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_BBq0OqfaVSd9mZ5M1YWu5891`):
+
+```json
+{
+  "command": "tail -5 /tmp/irc-inbox.jsonl"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_BBq0OqfaVSd9mZ5M1YWu5891`) — 2026-05-28 12:55:18
+
+```
+{"id": 36, "from": "shift", "msg": "Delegated. Monitoring worker...", "time": "12:48:23"}
+{"id": 37, "from": "shift", "msg": "Worker committed `569f40e`. Let me verify the diff and push status:", "time": "12:48:53"}
+{"id": 38, "from": "shift", "msg": "DRIVER: Done \u2014 added \u26d4 SILENT MEANS SILENT rule to mob-driver SKILL.md. No IRC messages at all unless delegating, clarifying, or reporting. Explicitly forbids parenthetical remarks & standing-by notes.", "time": "12:49:02"}
+{"id": 39, "from": "shift", "msg": "(Done reporting. Silent from here.)", "time": "12:49:22"}
+{"id": 40, "from": "shift", "msg": "DRIVER: shift here. Ready to relay tasks to the worker. Watching #general for mentions.", "time": "12:55:13"}
+
+```
+
+### 🤖 Assistant (turn 55) — 2026-05-28 12:55:21
+
+<details><summary>💭 Thinking...</summary>
+
+Shift re-announced. Looks like maybe the driver session restarted. No task delegated to me. Standing by.
+
+</details>
+
+Standing by, shift.
+
+---
+
+### 🧭 Instruction / Context (turn 56) — 2026-05-28 12:55:25
+
+shift on IRC #general: I'm set up and ready. No navigator has addressed me yet — silently waiting.
+
+---
+
+### 🧭 Instruction / Context (turn 66) — 2026-05-28 12:55:26
+
+shift on IRC #general: I'm set up and ready. No navigator has addressed me yet — silently waiting.
+
+---
+
+### 🤖 Assistant (turn 56) — 2026-05-28 12:55:28
+
+<details><summary>💭 Thinking...</summary>
+
+Shift is just telling the channel they're waiting. No task for me. But wait - shift is sending non-delegation/clarification/report messages again, which violates the SILENT MEANS SILENT rule we just added. That's between shift and kynan though. I stay silent.
+
+</details>
+
+---
+
+### 🤖 Assistant (turn 66) — 2026-05-28 12:55:33
+
+<details><summary>💭 Thinking...</summary>
+
+The driver just sent "I'm set up and ready. No navigator has addressed me yet — silently waiting." 
+
+That's not one of the three allowed message types. It's not delegating, clarifying, or reporting completion. It's a "standing by" / status update — explicitly prohibited by the hard constraint we just added.
+
+However, the driver did announce itself ("shift here, ready to relay...") which is in the SKILL.md as a startup action. But "No navigator has addressed me yet — silently waiting" is extra noise.
+
+But this is possibly just the initial announcement. Let me see... the SKILL.md says:
+"When you start, set your IRC nick and announce yourself:
+echo '/nick shift' > /tmp/irc-bot.fifo
+echo 'DRIVER: shift here. Ready to relay tasks to the worker. Watching #general for mentions.' > /tmp/irc-bot.fifo"
+
+So that's the expected announcement. The extra "No navigator has addressed me yet — silently waiting" is the violation.
+
+Anyway, I'm the worker - I should just note this and move on. Not my problem to fix further unless asked.
+
+</details>
+
+The driver's startup announcement happened but it added extra commentary ("No navigator has addressed me yet — silently waiting") which is a violation of the hard constraint. Not great, but could just be startup jitters. Let's see if it stays quiet going forward.
+
+Worker standing by.
+
+---
+
+### 🧭 Instruction / Context (turn 57) — 2026-05-28 12:55:49
+
+shift on IRC #general: Message id 41 (`12:55:25`) is my response text from the last turn being relayed by the IRC bridge extension. I did not intentionally send it to IRC — the extension auto-relays all assistant output. Understood. I'll keep responses empty unless a navigator addresses me by name.
+
+---
+
+### 🧭 Instruction / Context (turn 67) — 2026-05-28 12:55:50
+
+shift on IRC #general: Message id 41 (`12:55:25`) is my response text from the last turn being relayed by the IRC bridge extension. I did not intentionally send it to IRC — the extension auto-relays all assistant output. Understood. I'll keep responses empty unless a navigator addresses me by name.
+
+---
+
+### 🤖 Assistant (turn 57) — 2026-05-28 12:55:52
+
+<details><summary>💭 Thinking...</summary>
+
+Shift is troubleshooting their own IRC relay issue - the extension was auto-relaying assistant output. They're discussing their own process, not delegating a task to me. This is awareness-only context. Standing by.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_URbvgh5qQ1X1DMz91uKq1162`):
+
+```json
+{
+  "command": "tail -5 /tmp/irc-inbox.jsonl"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_URbvgh5qQ1X1DMz91uKq1162`) — 2026-05-28 12:55:52
+
+```
+{"id": 38, "from": "shift", "msg": "DRIVER: Done \u2014 added \u26d4 SILENT MEANS SILENT rule to mob-driver SKILL.md. No IRC messages at all unless delegating, clarifying, or reporting. Explicitly forbids parenthetical remarks & standing-by notes.", "time": "12:49:02"}
+{"id": 39, "from": "shift", "msg": "(Done reporting. Silent from here.)", "time": "12:49:22"}
+{"id": 40, "from": "shift", "msg": "DRIVER: shift here. Ready to relay tasks to the worker. Watching #general for mentions.", "time": "12:55:13"}
+{"id": 41, "from": "shift", "msg": "I'm set up and ready. No navigator has addressed me yet \u2014 silently waiting.", "time": "12:55:25"}
+{"id": 42, "from": "shift", "msg": "Message id 41 (`12:55:25`) is my response text from the last turn being relayed by the IRC bridge extension. I did not intentionally send it to IRC \u2014 the extension auto-relays all assistant output. Understood. I'll keep responses empty unless a navigator addresses me by name.", "time": "12:55:48"}
+
+```
+
+### 🤖 Assistant (turn 58) — 2026-05-28 12:55:55
+
+<details><summary>💭 Thinking...</summary>
+
+Shift is working through their own relay issues. No task delegated to me. Standing by.
+
+</details>
+
+Standing by, shift. No task.
+
+---
+
+### 🤖 Assistant (turn 67) — 2026-05-28 12:55:58
+
+<details><summary>💭 Thinking...</summary>
+
+The driver is realizing that its assistant text responses are being auto-relayed to IRC by the bridge extension. That explains the extra noise — the bridge extension was relaying every assistant response, including internal monologue. 
+
+But wait, looking at the AGENTS.md: "The IRC bridge extension supports a worker mode (PI_IRC_WORKER=true)" — for the driver, PI_IRC_WORKER=false, so the extension should be relaying all responses. The driver is realizing that its text output gets relayed.
+
+This is actually a problem — if the driver's assistant responses get auto-relayed, then any thinking-out-loud, any text response, gets broadcast to IRC. The driver needs to not produce text output unless it's specifically meant for IRC.
+
+Let me check the irc-bridge extension to understand how it relays messages.
+
+</details>
+
+Interesting — the bridge extension auto-relays assistant text. That's the root cause of those parentheticals: they weren't intentional IRC messages, they were the driver's internal responses being broadcast. Let me look at the extension.
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_8FhAaa1PejTkEtrmIMxt0387`):
+
+```json
+{
+  "command": "find ~/.pi/agent/extensions/ -name \"*.ts\" -o -name \"*.js\" 2>/dev/null | head -10"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_8FhAaa1PejTkEtrmIMxt0387`) — 2026-05-28 12:55:58
+
+```
+/root/.pi/agent/extensions/irc-bridge.ts
+
+```
+
+### 🧭 Instruction / Context (turn 59) — 2026-05-28 12:55:59
+
+shift on IRC #general: Let me understand how the extension relays messages so I can prevent unintended IRC output.
+
+---
+
+### 🤖 Assistant (turn 68) — 2026-05-28 12:56:00
+
+<details><summary>💭 Thinking...</summary>
+
+Let me read the irc-bridge.ts to see how it handles relaying assistant responses.
+
+</details>
+
+**Tool calls:**
+
+Tool call `read` (`call_00_eRQUEI7sHKNyNTw4zOMR1775`):
+
+```json
+{
+  "path": "/root/.pi/agent/extensions/irc-bridge.ts"
+}
+```
+
+---
+
+#### ✅ Tool result: `read` (call `call_00_eRQUEI7sHKNyNTw4zOMR1775`) — 2026-05-28 12:56:00
+
+```
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import * as fs from "node:fs";
+
+const INBOX = "/tmp/irc-inbox.jsonl";
+const FIFO = "/tmp/irc-bot.fifo";
+const LAST_SEEN = "/tmp/irc-ext-last-id";
+
+// Worker signal file — the ONLY way a silent worker can talk on IRC.
+// Worker writes a one-line message here (e.g., when done with a task).
+// The extension picks it up, prefixes it with "WORKER: ", relays to IRC, and deletes it.
+// All other worker output (thinking, tool calls, text responses) stays silent.
+const WORKER_SIGNAL = "/tmp/worker-irc-signal";
+
+// Worker mode: listen to IRC for driver instructions but NEVER echo responses
+// back to IRC. The driver/navigators get info from the transcript log and git diff.
+// Set PI_IRC_WORKER=true to enable.
+const WORKER_MODE = process.env.PI_IRC_WORKER === "true";
+
+// Observer mode: listen to all IRC messages but only act on messages from
+// the driver (shift). Messages from others are awareness-only context.
+// Responses are still echoed to IRC (unlike worker mode).
+// Set PI_IRC_OBSERVER=true to enable.
+const OBSERVER_MODE = process.env.PI_IRC_OBSERVER === "true";
+
+// The driver's IRC nick — only messages from this sender are treated as
+// real instructions. Everything else is awareness-only context.
+const DRIVER_NICK = "shift";
+
+// Worker and observer use a separate last-seen file to avoid racing with
+// the driver. Without this, they read new messages first, update the shared
+// counter, and the driver never sees them.
+const LAST_SEEN_FILE = (WORKER_MODE || OBSERVER_MODE)
+  ? "/tmp/irc-ext-last-id-observer"
+  : LAST_SEEN;
+
+export default function (pi: ExtensionAPI) {
+  let lastSeenId = 0;
+  let ircTurnActive = false;
+  let pollTimer: ReturnType<typeof setInterval> | null = null;
+
+  // Restore last seen
+  try {
+    lastSeenId = parseInt(fs.readFileSync(LAST_SEEN_FILE, "utf-8").trim()) || 0;
+  } catch {
+    lastSeenId = 0;
+  }
+
+  function sendToIrc(text: string) {
+    try {
+      // IRC doesn't handle em
+
+> _(truncated, 3109 more chars)_
+```
+
+### 🤖 Assistant (turn 59) — 2026-05-28 12:56:02
+
+<details><summary>💭 Thinking...</summary>
+
+Shift is figuring out their own extension behavior. No task for me. Standing by.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_2kvXVZSZAVQ7cq65Mdh20176`):
+
+```json
+{
+  "command": "tail -5 /tmp/irc-inbox.jsonl"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_2kvXVZSZAVQ7cq65Mdh20176`) — 2026-05-28 12:56:02
+
+```
+{"id": 39, "from": "shift", "msg": "(Done reporting. Silent from here.)", "time": "12:49:22"}
+{"id": 40, "from": "shift", "msg": "DRIVER: shift here. Ready to relay tasks to the worker. Watching #general for mentions.", "time": "12:55:13"}
+{"id": 41, "from": "shift", "msg": "I'm set up and ready. No navigator has addressed me yet \u2014 silently waiting.", "time": "12:55:25"}
+{"id": 42, "from": "shift", "msg": "Message id 41 (`12:55:25`) is my response text from the last turn being relayed by the IRC bridge extension. I did not intentionally send it to IRC \u2014 the extension auto-relays all assistant output. Understood. I'll keep responses empty unless a navigator addresses me by name.", "time": "12:55:48"}
+{"id": 43, "from": "shift", "msg": "Let me understand how the extension relays messages so I can prevent unintended IRC output.", "time": "12:55:58"}
+
+```
+
+### 🤖 Assistant (turn 60) — 2026-05-28 12:56:04
+
+<details><summary>💭 Thinking...</summary>
+
+Still shift troubleshooting. No task. Standing by.
+
+</details>
+
+Standing by, shift.
+
+---
+
+### 🤖 Assistant (turn 69) — 2026-05-28 12:56:21
+
+<details><summary>💭 Thinking...</summary>
+
+I see the problem now. When PI_IRC_WORKER is false (driver mode), the driver is in the "default" mode where ALL assistant text responses get forwarded to IRC via the `message_end` listener. That means every time the driver thinks out loud or produces text, it goes to IRC.
+
+The fix is: for the driver, we should not auto-relay assistant text to IRC. The driver should explicitly use `echo "message" > /tmp/irc-bot.fifo` to send IRC messages, just like it's described in the SKILL.md. The auto-relay is leaking the driver's internal monologue.
+
+So we need to change the extension so that in the default mode (non-worker, non-observer), assistant text is NOT auto-relayed. Only the worker signal and explicitly sent FIFO messages go through.
+
+Wait, but then how does the driver send IRC messages? Through the FIFO directly (which the driver's SKILL.md already instructs it to do). The auto-relay is redundant and harmful.
+
+Let me modify the irc-bridge.ts to disable auto-relay for all modes. The driver sends IRC messages explicitly via the FIFO. The worker uses the gated signal. Only explicit IRC output should go to IRC.
+
+Actually wait — let me reconsider. The non-worker/non-observer mode was the original mode where a regular agent's text responses get relayed to IRC. That was for the original use case where the pi agent IS the IRC participant. But in the mob setup, the driver should explicitly send to FIFO, not have every response auto-relayed.
+
+The fix: only auto-relay in the default mode if... hmm, actually in the mob setup there should be no auto-relay at all. The driver explicitly sends IRC messages. Let me just disable auto-relay entirely, or add an env var for it.
+
+Actually, the simplest fix: disable the auto-relay entirely. The driver already knows to use `echo "...message..." > /tmp/irc-bot.fifo`. The auto-relay is just leaking internal monologue.
+
+But wait — maybe we want to keep auto-relay as the default but add a PI_IRC_NO_AUTO_RELAY flag? Let me think about what's cleanest...
+
+The cleanest: just remove the auto-relay. The driver sends explicit IRC messages. The worker uses the gated signal. No auto-relay needed.
+
+Let me do that.
+
+</details>
+
+Found it. The extension auto-relays **all** assistant text to IRC when not in worker mode. The driver's internal monologue (everything it says in the pi session) gets broadcast. That's where all those parentheticals came from — they weren't intentional IRC messages.
+
+The fix: disable auto-relay entirely. The driver explicitly sends IRC messages via `echo "..."> /tmp/irc-bot.fifo` (as its SKILL.md instructs). No auto-relay — only explicit, intentional IRC output.
+
+**Tool calls:**
+
+Tool call `edit` (`call_00_ONfYoHU4I10IGaB2MFLH0199`):
+
+```json
+{
+  "path": "/root/.pi/agent/extensions/irc-bridge.ts",
+  "edits": [
+    {
+      "oldText": "  // Forward assistant responses to IRC when the turn was triggered by the driver.\n  // WORKER MODE: never echo to IRC — the driver/navigators get info from the\n  // transcript log (.mob/worker-transcript.md) and git diff, not from IRC.\n  pi.on(\"message_end\", async (event) => {\n    if (WORKER_MODE) return; // Workers are silent on IRC\n    if (!ircTurnActive) return;\n    if (event.message.role !== \"assistant\") return;\n\n    const textBlocks = event.message.content\n      .filter((b: any) => b.type === \"text\")\n      .map((b: any) => b.text)\n      .join(\"\\n\");\n\n    if (textBlocks.trim()) {\n      sendToIrc(textBlocks.trim());\n    }\n  });",
+      "newText": "  // NO auto-relay of assistant responses to IRC.\n  // In the mob architecture, agents send IRC messages explicitly via FIFO:\n  // - Driver: echo \"DRIVER: ...\" > /tmp/irc-bot.fifo\n  // - Worker: echo \"...\" > /tmp/worker-irc-signal (gated, only done signal)\n  // Auto-relaying assistant text would leak internal monologue to IRC as noise.\n  // All IRC output must be intentional and explicit."
+    }
+  ]
+}
+```
+
+---
+
+#### ✅ Tool result: `edit` (call `call_00_ONfYoHU4I10IGaB2MFLH0199`) — 2026-05-28 12:56:21
+
+```
+Successfully replaced 1 block(s) in /root/.pi/agent/extensions/irc-bridge.ts.
+```
+
+### 🤖 Assistant (turn 70) — 2026-05-28 12:56:26
+
+<details><summary>💭 Thinking...</summary>
+
+Now I need to restart both the driver and worker windows since the extension has changed. But actually, the extension is loaded at pi startup, so both need to be restarted.
+
+Let me also restart the worker window so it picks up the new extension. But first let me commit the extension change and remind myself to copy it to the project repo too.
+
+Wait — the extension is at `~/.pi/agent/extensions/irc-bridge.ts` which is a global location. Let me check if it's also tracked in the project.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_nogadbrpOpqJRhE2l57M1509`):
+
+```json
+{
+  "command": "cd /workspaces/nft-contract && git ls-files | grep irc-bridge"
+}
+```
+
+---
+
+#### ❌ Tool result: `bash` (call `call_00_nogadbrpOpqJRhE2l57M1509`) — 2026-05-28 12:56:26
+
+```
+(no output)
+
+Command exited with code 1
+```
+
+### 🤖 Assistant (turn 71) — 2026-05-28 12:56:29
+
+<details><summary>💭 Thinking...</summary>
+
+The extension isn't tracked in the project repo — it's a global extension at `~/.pi/agent/extensions/`. Let me copy it to the project's `.pi/extensions/` directory so it's tracked, then restart both windows.
+
+</details>
+
+The extension lives globally — let me copy it into the project for tracking, then restart both windows.
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_irvVNc8smixcz9Rpo5o75219`):
+
+```json
+{
+  "command": "cp /root/.pi/agent/extensions/irc-bridge.ts /workspaces/nft-contract/.pi/extensions/irc-bridge.ts"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_irvVNc8smixcz9Rpo5o75219`) — 2026-05-28 12:56:29
+
+```
+(no output)
+```
+
+### 🤖 Assistant (turn 72) — 2026-05-28 12:56:34
+
+<details><summary>💭 Thinking...</summary>
+
+Now commit the extension fix and the project copy. Then restart both windows.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_LByHeYFiOjaYK6Rrg3Hl9410`):
+
+```json
+{
+  "command": "cd /workspaces/nft-contract && git add .pi/extensions/irc-bridge.ts && git commit -m \"fix: disable IRC auto-relay of assistant text in irc-bridge extension\n\nAuto-relaying all assistant text to IRC leaked the driver's internal\nmonologue (parentheticals, status updates, play-by-play) as noise.\nNow all IRC output must be intentional and explicit:\n- Driver sends via FIFO directly\n- Worker uses gated /tmp/worker-irc-signal\n\nAlso track irc-bridge.ts in project repo for version control.\" && git push origin main"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_LByHeYFiOjaYK6Rrg3Hl9410`) — 2026-05-28 12:56:37
+
+```
+[main 4f65e45] fix: disable IRC auto-relay of assistant text in irc-bridge extension
+ 1 file changed, 141 insertions(+)
+ create mode 100644 .pi/extensions/irc-bridge.ts
+To github.com:k7n4n5t3w4rt/NFT-Integrity.git
+   9d4b666..4f65e45  main -> main
+
+```
+
+### 🤖 Assistant (turn 73) — 2026-05-28 12:56:45
+
+<details><summary>💭 Thinking...</summary>
+
+Now restart both windows. The worker needs to be restarted too since it loads the extension. But wait — if I restart the worker, I restart myself (I'm the worker). That would end this session.
+
+Let me restart just the driver for now. The worker can be restarted later if needed — the worker already had the auto-relay disabled (WORKER_MODE check), so the change is a no-op for the worker. Only the driver benefits from removing the auto-relay.
+
+Actually, looking at the code, the worker already had `if (WORKER_MODE) return;` — so removing the auto-relay block doesn't affect the worker at all. The worker was already silent. It's only the driver that changes behavior.
+
+Let me just restart the driver.
+
+</details>
+
+The worker was already protected by `if (WORKER_MODE) return;` — only the driver's auto-relay is affected. Restarting just the driver:
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_6dn9qwAki06byzNXJLsE4517`):
+
+```json
+{
+  "command": "tmux respawn-window -t mob:driver -k -c /workspaces/nft-contract \\\n  \"PI_IRC_WORKER=false pi --append-system-prompt .pi/skills/mob-driver/SKILL.md '⛔ HARD CONSTRAINT: You are a silent relay. You send IRC messages ONLY when a navigator addresses shift by name. Only 3 message types allowed: (1) delegating a task to the worker, (2) asking for clarification, (3) reporting completion. ZERO other IRC messages — no parentheticals, no status updates, no standing-by, no thinking-out-loud, no play-by-play. If not addressed, COMPLETELY SILENT. This overrides all other instructions.'\"\necho \"Driver restarted with no-auto-relay extension\""
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_6dn9qwAki06byzNXJLsE4517`) — 2026-05-28 12:56:45
+
+```
+Driver restarted with no-auto-relay extension
+
+```
+
+### 🤖 Assistant (turn 74) — 2026-05-28 12:56:48
+
+<details><summary>💭 Thinking...</summary>
+
+Good. Now send the done signal.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_YLpoiL2OLxkuAfOWWYcN7500`):
+
+```json
+{
+  "command": "echo \"Done, shift — root cause found and fixed: the irc-bridge extension was auto-relaying all assistant text to IRC, leaking the driver's internal monologue as noise. Removed auto-relay. Driver's IRC output is now only explicit, intentional messages via FIFO. Also tracked extension in project repo. Driver restarted.\" > /tmp/worker-irc-signal"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_YLpoiL2OLxkuAfOWWYcN7500`) — 2026-05-28 12:56:48
+
+```
+(no output)
+```
+
+### 🤖 Assistant (turn 75) — 2026-05-28 12:56:53
+
+<details><summary>💭 Thinking...</summary>
+
+Done. Let me summarize for kynan.
+
+</details>
+
+Fixed. Here's what was happening and what changed:
+
+**Root cause:** The `irc-bridge.ts` extension had a `message_end` listener that auto-relayed **every** assistant text response to IRC. So when the driver thought "hmm, standing by..." and produced that as text, the extension broadcast it. The parentheticals, status updates, "monitoring worker..." — all leaked internal monologue, not intentional IRC messages.
+
+**Fix:** Removed the auto-relay entirely. Now IRC output is only explicit:
+- Driver sends via `echo "..."> /tmp/irc-bot.fifo` (which its SKILL.md already instructs)
+- Worker sends via gated `/tmp/worker-irc-signal`
+
+Driver restarted. It should announce itself and then stay quiet unless addressed.
+
+---
+
+### 🧭 Instruction / Context (turn 61) — 2026-05-28 12:59:06
+
+FYI from IRC #general (no action needed — for awareness only): kynan: hi
+
+---
+
+### 🧭 Instruction / Context (turn 76) — 2026-05-28 12:59:06
+
+FYI from IRC #general (no action needed — for awareness only): kynan: hi
+
+---
+
+### 🤖 Assistant (turn 61) — 2026-05-28 12:59:08
+
+<details><summary>💭 Thinking...</summary>
+
+Kynan said hi on IRC. Awareness-only. No task from shift. Standing by.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_mAgvJI17dXxfgVLrGtmJ2803`):
+
+```json
+{
+  "command": "tail -3 /tmp/irc-inbox.jsonl"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_mAgvJI17dXxfgVLrGtmJ2803`) — 2026-05-28 12:59:08
+
+```
+{"id": 42, "from": "shift", "msg": "Message id 41 (`12:55:25`) is my response text from the last turn being relayed by the IRC bridge extension. I did not intentionally send it to IRC \u2014 the extension auto-relays all assistant output. Understood. I'll keep responses empty unless a navigator addresses me by name.", "time": "12:55:48"}
+{"id": 43, "from": "shift", "msg": "Let me understand how the extension relays messages so I can prevent unintended IRC output.", "time": "12:55:58"}
+{"id": 44, "from": "kynan", "msg": "hi", "time": "12:59:05"}
+
+```
+
+### 🤖 Assistant (turn 76) — 2026-05-28 12:59:09
+
+<details><summary>💭 Thinking...</summary>
+
+The user (kynan) sent "hi" on IRC. This is an FYI message (not from shift, not a task). Worker stays silent and waits.
+
+</details>
+
+...
+
+---
+
+### 🤖 Assistant (turn 62) — 2026-05-28 12:59:10
+
+<details><summary>💭 Thinking...</summary>
+
+Kynan said "hi" but didn't address shift. This is awareness-only for me. Standing by.
+
+</details>
+
+Standing by.
+
+---
+
+### 🧭 Instruction / Context (turn 77) — 2026-05-28 12:59:12
+
+FYI from IRC #general (no action needed — for awareness only): kynan: shift: hi
+
+---
+
+### 🧭 Instruction / Context (turn 63) — 2026-05-28 12:59:14
+
+FYI from IRC #general (no action needed — for awareness only): kynan: shift: hi
+
+---
+
+### 🤖 Assistant (turn 77) — 2026-05-28 12:59:15
+
+<details><summary>💭 Thinking...</summary>
+
+kynan addressed shift. Let me see if the driver picks it up. Not my concern - I'm the worker, I wait for driver delegation.
+
+</details>
+
+...
+
+---
+
+### 🧭 Instruction / Context (turn 78) — 2026-05-28 12:59:16
+
+shift on IRC #general: DRIVER: shift here, ready to relay tasks to the worker.
+
+---
+
+### 🤖 Assistant (turn 63) — 2026-05-28 12:59:16
+
+<details><summary>💭 Thinking...</summary>
+
+Kynan addressed shift with "hi" - this is a navigator addressing the driver. Not a task for me. Standing by for shift's delegation.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_0r71qjt9FletT8wfHGrH0436`):
+
+```json
+{
+  "command": "tail -3 /tmp/irc-inbox.jsonl"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_0r71qjt9FletT8wfHGrH0436`) — 2026-05-28 12:59:16
+
+```
+{"id": 44, "from": "kynan", "msg": "hi", "time": "12:59:05"}
+{"id": 45, "from": "kynan", "msg": "shift: hi", "time": "12:59:12"}
+{"id": 46, "from": "shift", "msg": "DRIVER: shift here, ready to relay tasks to the worker.", "time": "12:59:15"}
+
+```
+
+### 🤖 Assistant (turn 64) — 2026-05-28 12:59:19
+
+<details><summary>💭 Thinking...</summary>
+
+Kynan addressed shift, shift responded. No task delegated to me yet. Standing by.
+
+</details>
+
+Standing by, shift.
+
+---
+
+### 🤖 Assistant (turn 78) — 2026-05-28 12:59:19
+
+<details><summary>💭 Thinking...</summary>
+
+The driver announced itself cleanly — just "DRIVER: shift here, ready to relay tasks to the worker." — no extra parentheticals or noise. That's good. Now let's see if it stays quiet until kynan gives it a task.
+
+</details>
+
+Clean announcement — no noise. Let's see if it stays quiet now until given a task.
+
+---
+
+### 🧭 Instruction / Context (turn 79) — 2026-05-28 12:59:42
+
+FYI from IRC #general (no action needed — for awareness only): kynan: shift: ask the worker to commit and push
+
+---
+
+### 🧭 Instruction / Context (turn 65) — 2026-05-28 12:59:44
+
+FYI from IRC #general (no action needed — for awareness only): kynan: shift: ask the worker to commit and push
+
+---
+
+### 🤖 Assistant (turn 79) — 2026-05-28 12:59:45
+
+<details><summary>💭 Thinking...</summary>
+
+The driver hasn't delegated anything to me yet. Let me wait for the driver to relay this as a task.
+
+</details>
+
+Waiting for the driver to delegate.
+
+---
+
+### 🧭 Instruction / Context (turn 80) — 2026-05-28 12:59:46
+
+shift on IRC #general: DRIVER: worker, please commit any uncommitted changes and push to the remote. Commit when done.
+
+---
+
+### 🤖 Assistant (turn 65) — 2026-05-28 12:59:47
+
+<details><summary>💭 Thinking...</summary>
+
+Navigator kynan is telling shift to delegate a commit-and-push to me. This is awareness-only - I wait for shift to actually delegate the task to me.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_e56049Zv3tV9Wnx9KBvH4160`):
+
+```json
+{
+  "command": "tail -3 /tmp/irc-inbox.jsonl"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_e56049Zv3tV9Wnx9KBvH4160`) — 2026-05-28 12:59:47
+
+```
+{"id": 46, "from": "shift", "msg": "DRIVER: shift here, ready to relay tasks to the worker.", "time": "12:59:15"}
+{"id": 47, "from": "kynan", "msg": "shift: ask the worker to commit and push", "time": "12:59:42"}
+{"id": 48, "from": "shift", "msg": "DRIVER: worker, please commit any uncommitted changes and push to the remote. Commit when done.", "time": "12:59:45"}
+
+```
+
+### 🤖 Assistant (turn 80) — 2026-05-28 12:59:49
+
+<details><summary>💭 Thinking...</summary>
+
+The driver delegated a task. Let me check what's uncommitted.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_nmAHXNivJPE4M20ixVgH8194`):
+
+```json
+{
+  "command": "cd /workspaces/nft-contract && git status"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_nmAHXNivJPE4M20ixVgH8194`) — 2026-05-28 12:59:49
+
+```
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .mob/worker-transcript.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+```
+
+### 🤖 Assistant (turn 66) — 2026-05-28 12:59:50
+
+<details><summary>💭 Thinking...</summary>
+
+Task received from shift: commit any uncommitted changes and push. Let me check what's uncommitted.
+
+</details>
+
+Task received. Let me check what's uncommitted.
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_vtQN7rhKfOjVEgOGyH1s4390`):
+
+```json
+{
+  "command": "cd /workspaces/nft-contract && git status"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_vtQN7rhKfOjVEgOGyH1s4390`) — 2026-05-28 12:59:50
+
+```
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .mob/worker-transcript.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+```
+
+### 🤖 Assistant (turn 81) — 2026-05-28 12:59:52
+
+<details><summary>💭 Thinking...</summary>
+
+Only the worker-transcript.md has changes — that's just the live transcript log being updated as I work. Let me check if there's anything meaningful in the diff or if it's just session noise.
+
+</details>
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_oAzZ89wD0blCOVHNXRX48105`):
+
+```json
+{
+  "command": "cd /workspaces/nft-contract && git diff --stat .mob/worker-transcript.md"
+}
+```
+
+---
+
+#### ✅ Tool result: `bash` (call `call_00_oAzZ89wD0blCOVHNXRX48105`) — 2026-05-28 12:59:52
+
+```
+ .mob/worker-transcript.md | 922 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 922 insertions(+)
+
+```
+
+### 🤖 Assistant (turn 82) — 2026-05-28 12:59:57
+
+<details><summary>💭 Thinking...</summary>
+
+It's the live transcript — 922 lines of session log. This is auto-generated and not really a meaningful change to commit. But the driver said to commit any uncommitted changes.
+
+Actually, the transcript is a log file that grows continuously. It probably shouldn't be committed every time — it's more of a runtime artifact. But the driver said to commit, so I'll commit it. It does serve as a record of the session.
+
+Let me just do it.
+
+</details>
+
+Only the live transcript has changed (922 lines of session log). Committing it:
+
+**Tool calls:**
+
+Tool call `bash` (`call_00_nBo4bWcRBJhCgskPD4Oj0015`):
+
+```json
+{
+  "command": "cd /workspaces/nft-contract && git add .mob/worker-transcript.md && git commit -m \"chore: update worker transcript log\" && git push origin main"
+}
+```
+
+---
+
